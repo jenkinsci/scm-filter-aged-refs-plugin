@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.jenkins-ci.plugins</groupId>
+        <artifactId>plugin</artifactId>
+        <version>2.33</version>
+    </parent>
+
+    <artifactId>branch-source-aged-refs-traits</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+
+    <name>Branch Source Aged Refs Traits</name>
+    <url>https://wiki.jenkins-ci.org/display/JENKINS/Branch+Source+Aged+Filtering+Traits</url>
+    <description>Reactor adding an aged filtering strategy to several Branch Source Plugin configuration.</description>
+
+    <licenses>
+        <license>
+            <name>MIT</name>
+            <url>http://opensource.org/licenses/MIT</url>
+        </license>
+    </licenses>
+
+    <properties>
+        <jenkins.version>2.32.3</jenkins.version>
+        <bitbucket-branch-source.version>2.2.4-SNAPSHOT</bitbucket-branch-source.version>
+        <github-branch-source.version>2.2.3</github-branch-source.version>
+        <scm-api.version>2.2.0</scm-api.version>
+        <git.version>3.5.0</git.version>
+        <workflow.version>1.14.2</workflow.version>
+        <java.level>8</java.level>
+    </properties>
+
+    <scm>
+        <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
+        <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
+        <tag>HEAD</tag>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>witokodoria</id>
+            <name>Javier Delgado</name>
+            <email>witokondoria@gmail.com</email>
+        </developer>
+    </developers>
+
+    <modules>
+        <module>branch-source-aged-trait-common</module>
+        <module>bitbucket-source-aged-trait-plugin</module>
+        <module>github-source-aged-trait-plugin</module>
+    </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.5</version>
+        </dependency>
+
+         <!-- TODO: fixing transitive dependencies to bypass the maven-enforcer-plugin RequireUpperBoundDeps rule-->
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>display-url-api</artifactId>
+            <version>0.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>credentials</artifactId>
+            <version>2.1.13</version>
+        </dependency>
+        <dependency>
+            <groupId>com.jcraft</groupId>
+            <artifactId>jsch</artifactId>
+            <version>0.1.53</version>
+        </dependency>
+        <dependency>
+            <groupId>com.infradna.tool</groupId>
+            <artifactId>bridge-method-annotation</artifactId>
+            <version>1.15</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci</groupId>
+            <artifactId>annotation-indexer</artifactId>
+            <version>1.11</version>
+        </dependency>
+
+        <!-- TODO: tests fail with a Git plugin v3.5.0 failed to load- Token Macro Plugin v1.11 is older than required. To fix, install v1.12.1 or later. -->
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>token-macro</artifactId>
+            <version>1.12.1</version>
+        </dependency>
+
+        <!-- TODO: unnaceptable, hpi plugin wont boot a jenkins instance as it is getting a ClassNotFoundException: org.eclipse.jetty.security.LoginService -->
+        <dependency>
+            <groupId>org.eclipse.jetty</groupId>
+            <artifactId>jetty-security</artifactId>
+            <version>9.2.15.v20160210</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jenkins-ci.plugins.workflow</groupId>
+            <artifactId>workflow-aggregator</artifactId>
+            <version>${workflow.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins.workflow</groupId>
+            <artifactId>workflow-multibranch</artifactId>
+            <version>${workflow.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+</project>
