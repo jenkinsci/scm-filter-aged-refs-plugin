@@ -4,7 +4,11 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.plugins.git.GitSCM;
 import hudson.scm.SCMDescriptor;
 import jenkins.scm.api.SCMHead;
-import jenkins.scm.api.trait.*;
+import jenkins.scm.api.trait.SCMHeadFilter;
+import jenkins.scm.api.trait.SCMSourceContext;
+import jenkins.scm.api.trait.SCMSourceRequest;
+import jenkins.scm.api.trait.SCMSourceTrait;
+import jenkins.scm.api.trait.SCMSourceTraitDescriptor;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -22,8 +26,9 @@ public abstract class AgedStrategyTrait extends SCMSourceTrait{
     public AgedStrategyTrait(String retentionDays){
         if (StringUtils.isBlank(retentionDays)) {
             this.retentionDays = Integer.MAX_VALUE;
+        } else {
+            this.retentionDays = Integer.parseInt(retentionDays);
         }
-        this.retentionDays = Integer.parseInt(retentionDays);
     }
 
     @SuppressWarnings("unused") // used by Jelly EL
@@ -65,11 +70,15 @@ public abstract class AgedStrategyTrait extends SCMSourceTrait{
      */
     public abstract static class ExcludeBranchesSCMHeadFilter extends SCMHeadFilter {
 
-        public long acceptableDateTimeThreshold;
+        private long acceptableDateTimeThreshold;
 
         public ExcludeBranchesSCMHeadFilter(int retentionDays) {
             long now = System.currentTimeMillis();
             acceptableDateTimeThreshold = now - (24L * 60 * 60 * 1000 * retentionDays);
+        }
+
+        public long getAcceptableDateTimeThreshold() {
+            return acceptableDateTimeThreshold;
         }
 
         @Override

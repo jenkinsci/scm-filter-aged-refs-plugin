@@ -81,7 +81,7 @@ public class AgedRefsStrategyTrait extends AgedStrategyTrait{
                     BitbucketBranch branch = branchIterator.next();
                     long branchTS = branch.getDateMillis();
                     if (branch.getName().equals(scmHead.getName())) {
-                        return (Long.compare(branchTS, acceptableDateTimeThreshold) < 0);
+                        return (Long.compare(branchTS, super.getAcceptableDateTimeThreshold()) < 0);
                     }
                 }
             } else if (scmHead instanceof PullRequestSCMHead) {
@@ -91,7 +91,7 @@ public class AgedRefsStrategyTrait extends AgedStrategyTrait{
                     BitbucketPullRequest pull = pullIterator.next();
                     if (pull.getSource().getBranch().getName().equals(scmHead.getName())) {
                         long pullTS = pull.getSource().getCommit().getDateMillis();
-                        return (Long.compare(pullTS, acceptableDateTimeThreshold) < 0);
+                        return (Long.compare(pullTS, super.getAcceptableDateTimeThreshold()) < 0);
                     }
                 }
             }
