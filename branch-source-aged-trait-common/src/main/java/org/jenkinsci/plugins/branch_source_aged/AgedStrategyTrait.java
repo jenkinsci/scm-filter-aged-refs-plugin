@@ -3,6 +3,7 @@ package org.jenkinsci.plugins.branch_source_aged;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.plugins.git.GitSCM;
 import hudson.scm.SCMDescriptor;
+import hudson.util.FormValidation;
 import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.trait.SCMHeadFilter;
 import jenkins.scm.api.trait.SCMSourceContext;
@@ -10,6 +11,9 @@ import jenkins.scm.api.trait.SCMSourceRequest;
 import jenkins.scm.api.trait.SCMSourceTrait;
 import jenkins.scm.api.trait.SCMSourceTraitDescriptor;
 import org.apache.commons.lang3.StringUtils;
+import org.kohsuke.accmod.Restricted;
+import org.kohsuke.accmod.restrictions.NoExternalUse;
+import org.kohsuke.stapler.QueryParameter;
 
 import java.io.IOException;
 
@@ -24,11 +28,7 @@ public abstract class AgedStrategyTrait extends SCMSourceTrait{
      * Constructor for stapler.
      */
     public AgedStrategyTrait(String retentionDays){
-        if (StringUtils.isBlank(retentionDays)) {
-            this.retentionDays = Integer.MAX_VALUE;
-        } else {
-            this.retentionDays = Integer.parseInt(retentionDays);
-        }
+        this.retentionDays = Integer.parseInt(retentionDays);
     }
 
     @SuppressWarnings("unused") // used by Jelly EL
@@ -55,6 +55,27 @@ public abstract class AgedStrategyTrait extends SCMSourceTrait{
             return "Aged refs filtering strategy";
         }
 
+
+        @Restricted(NoExternalUse.class)
+        public FormValidation doCheckRetentionDays(@QueryParameter String value) {
+
+            FormValidation formValidation = FormValidation.ok();
+
+            try {
+                if (StringUtils.isBlank(value)) {
+                    formValidation = FormValidation.error("Not a number");
+                } else {
+                    int val = Integer.parseInt(value);
+                    if (val < 1) {
+                        formValidation = FormValidation.error("Not a positive number");
+                    }
+                }
+            } catch (NumberFormatException  e) {
+                formValidation = FormValidation.error("Not a number");
+            }
+
+            return formValidation;
+        }
 
         /**
          * {@inheritDoc}
