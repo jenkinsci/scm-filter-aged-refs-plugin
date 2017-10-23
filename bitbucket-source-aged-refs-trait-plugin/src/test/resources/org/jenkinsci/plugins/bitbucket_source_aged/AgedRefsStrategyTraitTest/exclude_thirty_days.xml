@@ -10,7 +10,7 @@
     <sshPort>-1</sshPort>
     <repositoryType>GIT</repositoryType>
     <traits>
-        <org.jenkinsci.plugins.bitbucket__source__aged.AgedRefsStrategyTrait plugin="bitbucket-source-aged-trait@${project.version}">
+        <org.jenkinsci.plugins.bitbucket__source__aged.AgedRefsStrategyTrait plugin="bitbucket-source-aged-refs-trait@${project.version}">
             <retentionDays>30</retentionDays>
         </org.jenkinsci.plugins.bitbucket__source__aged.AgedRefsStrategyTrait>
     </traits>

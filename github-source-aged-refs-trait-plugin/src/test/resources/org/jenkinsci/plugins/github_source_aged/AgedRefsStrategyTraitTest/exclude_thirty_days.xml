@@ -13,7 +13,7 @@
     <buildForkPRMerge>true</buildForkPRMerge>
     <buildForkPRHead>false</buildForkPRHead>
     <traits>
-        <org.jenkinsci.plugins.github__source__aged.AgedRefsStrategyTrait plugin="github-source-aged-trait@${project.version}">
+        <org.jenkinsci.plugins.github__source__aged.AgedRefsStrategyTrait plugin="github-source-aged-refs-trait@${project.version}">
             <retentionDays>30</retentionDays>
         </org.jenkinsci.plugins.github__source__aged.AgedRefsStrategyTrait>
     </traits>

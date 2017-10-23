@@ -8,24 +8,30 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>bitbucket-source-aged-trait</artifactId>
+    <artifactId>bitbucket-source-aged-refs-trait</artifactId>
     <packaging>hpi</packaging>
 
-    <name>Bitbucket Aged Filtering Trait Plugin</name>
+    <name>Bitbucket Aged References Filtering Trait Plugin</name>
     <description>Adds a filtering trait according to a ref date to an existing Bitbucket Branch Source Plugin configuration.</description>
 
     <dependencies>
+
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>cloudbees-bitbucket-branch-source</artifactId>
             <version>${bitbucket-branch-source.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>branch-source-aged-trait-common</artifactId>
+            <artifactId>branch-source-aged-refs-trait-common</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>scm-api</artifactId>
+            <version>${scm-api.version}</version>
+        </dependency>
+
     </dependencies>
 
     <build>

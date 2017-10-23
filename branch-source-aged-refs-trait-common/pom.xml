@@ -10,29 +10,41 @@
         <version>0.1.0-SNAPSHOT</version>
     </parent>
     
-    <artifactId>branch-source-aged-trait-common</artifactId>
+    <artifactId>branch-source-aged-refs-trait-common</artifactId>
 
-    <name>Branch Source Aged Refs shared components</name>
+    <name>Branch Source Aged References shared components</name>
     <description>A single abstract class to refactor code</description>
 
     <dependencies>
+
         <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>scm-api</artifactId>
-            <version>${scm-api.version}</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.5</version>
         </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>git</artifactId>
             <version>${git.version}</version>
         </dependency>
-
-        <!-- TODO: fixing transitive dependencies to bypass the maven-enforcer-plugin RequireUpperBoundDeps rule-->
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>script-security</artifactId>
-            <version>1.16</version>
+            <artifactId>scm-api</artifactId>
+            <version>${scm-api.version}</version>
         </dependency>
 
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <version>2.8.2</version>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
