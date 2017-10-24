@@ -8,13 +8,13 @@
         <version>2.33</version>
     </parent>
 
-    <artifactId>branch-source-aged-refs-traits</artifactId>
+    <artifactId>scm-filter-aged-refs-parent</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
-    <name>Branch Source Aged Refs Traits</name>
-    <url>https://wiki.jenkins-ci.org/display/JENKINS/Branch+Source+Aged+Filtering+Traits+Plugin</url>
-    <description>Reactor adding an aged filtering strategy to several Branch Source Plugin configuration.</description>
+    <name>Aged References SCM Filter</name>
+    <url>https://wiki.jenkins-ci.org/display/JENKINS/Aged+References+SCM+Filter+Plugins</url>
+    <description>Reactor adding an aged filtering strategy to several SCM implementations.</description>
 
     <licenses>
         <license>
@@ -35,9 +35,9 @@
     </properties>
 
     <scm>
-        <connection>scm:git:git://github.com/jenkinsci/${project.artifactId}-plugin.git</connection>
-        <developerConnection>scm:git:git@github.com:jenkinsci/${project.artifactId}-plugin.git</developerConnection>
-        <url>https://github.com/jenkinsci/${project.artifactId}-plugin</url>
+        <connection>scm:git:git://github.com/jenkinsci/scm-filter-aged-refs-plugin.git</connection>
+        <developerConnection>scm:git:git@github.com:jenkinsci/scm-filter-aged-refs-plugin.git</developerConnection>
+        <url>https://github.com/jenkinsci/scm-filter-aged-refs-plugin</url>
         <tag>HEAD</tag>
     </scm>
 
@@ -50,9 +50,9 @@
     </developers>
 
     <modules>
-        <module>branch-source-aged-refs-trait-common</module>
-        <module>bitbucket-source-aged-refs-trait-plugin</module>
-        <module>github-source-aged-refs-trait-plugin</module>
+        <module>scm-filter-aged-refs-common</module>
+        <module>bitbucket-scm-filter-aged-refs</module>
+        <module>github-scm-filter-aged-refs</module>
     </modules>
 
     <dependencies>
@@ -78,12 +78,6 @@
         </dependency>
 
         <!-- setting transitive dependencies version to comply with the maven-enforcer-plugin RequireUpperBoundDeps rule-->
-        <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>scm-api</artifactId>
-            <version>${scm-api.version}</version>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>junit</artifactId>
@@ -143,6 +137,11 @@
             <artifactId>script-security</artifactId>
             <version>1.16</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>scm-api</artifactId>
+            <version>${scm-api.version}</version>
         </dependency>
 
     </dependencies>
