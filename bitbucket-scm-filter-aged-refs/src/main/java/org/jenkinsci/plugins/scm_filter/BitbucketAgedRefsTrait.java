@@ -12,6 +12,7 @@ import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.trait.SCMBuilder;
 import jenkins.scm.api.trait.SCMSourceContext;
 import jenkins.scm.api.trait.SCMSourceRequest;
+import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.io.IOException;
 import java.util.Iterator;
@@ -26,6 +27,7 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
      *
      * @param retentionDays
      */
+    @DataBoundConstructor
     public BitbucketAgedRefsTrait(String retentionDays) {
         super(retentionDays);
     }

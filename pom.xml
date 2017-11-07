@@ -24,7 +24,7 @@
 
     <properties>
         <jenkins.version>2.32.3</jenkins.version>
-        <bitbucket-branch-source.version>2.2.4</bitbucket-branch-source.version>
+        <bitbucket-branch-source.version>2.2.5</bitbucket-branch-source.version>
         <github-branch-source.version>2.2.3</github-branch-source.version>
         <scm-api.version>2.2.0</scm-api.version>
         <branch-api.version>2.0.11</branch-api.version>
