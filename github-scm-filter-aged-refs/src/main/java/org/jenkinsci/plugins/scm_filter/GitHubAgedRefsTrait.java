@@ -3,15 +3,18 @@ package org.jenkinsci.plugins.scm_filter;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import jenkins.scm.api.SCMHead;
+import jenkins.scm.api.mixin.TagSCMHead;
 import jenkins.scm.api.trait.SCMBuilder;
 import jenkins.scm.api.trait.SCMSourceContext;
 import jenkins.scm.api.trait.SCMSourceRequest;
+import org.eclipse.jgit.lib.Constants;
 import org.jenkinsci.plugins.github_branch_source.BranchSCMHead;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMBuilder;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSourceRequest;
 import org.jenkinsci.plugins.github_branch_source.PullRequestSCMHead;
 import org.kohsuke.github.GHBranch;
 import org.kohsuke.github.GHPullRequest;
+import org.kohsuke.github.GHRef;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.io.IOException;
@@ -91,6 +94,17 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                     if (("PR-" + pull.getNumber()).equals(scmHead.getName())) {
                         long pullTS = pull.getHead().getCommit().getCommitShortInfo().getCommitDate().getTime();
                         return (Long.compare(pullTS, super.getAcceptableDateTimeThreshold()) < 0);
+                    }
+                }
+            } else if (scmHead instanceof TagSCMHead) {
+                Iterable<GHRef> tags = ((GitHubSCMSourceRequest) scmSourceRequest).getTags();
+                Iterator<GHRef> tagIterator = tags.iterator();
+                while (tagIterator.hasNext()) {
+                    GHRef tag = tagIterator.next();
+                    String tagName = tag.getRef().substring(Constants.R_TAGS.length());
+                    if (tagName.equals(scmHead.getName())) {
+                        long tagTS = ((TagSCMHead) scmHead).getTimestamp();
+                        return (Long.compare(tagTS, super.getAcceptableDateTimeThreshold()) < 0);
                     }
                 }
             }

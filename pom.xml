@@ -25,7 +25,7 @@
     <properties>
         <jenkins.version>2.32.3</jenkins.version>
         <bitbucket-branch-source.version>2.2.4</bitbucket-branch-source.version>
-        <github-branch-source.version>2.2.3</github-branch-source.version>
+        <github-branch-source.version>2.3.1</github-branch-source.version>
         <scm-api.version>2.2.0</scm-api.version>
         <branch-api.version>2.0.11</branch-api.version>
         <git.version>3.5.0</git.version>
@@ -92,7 +92,7 @@
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>credentials</artifactId>
-            <version>2.1.13</version>
+            <version>2.1.15</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -104,7 +104,7 @@
         <dependency>
             <groupId>com.infradna.tool</groupId>
             <artifactId>bridge-method-annotation</artifactId>
-            <version>1.15</version>
+            <version>1.17</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -116,7 +116,7 @@
         <dependency>
             <groupId>org.jenkins-ci</groupId>
             <artifactId>symbol-annotation</artifactId>
-            <version>1.9</version>
+            <version>1.10</version>
             <scope>test</scope>
         </dependency>
         <dependency>
