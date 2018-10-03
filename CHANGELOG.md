@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0 (upcoming)
+
+* Traits selectable via a Symbol
+
 ## 0.2.0 (8/22/18)
 
 * DataBoundConstructor annotation missing from Bitbucket plugin (#2) (Thanks to @ConstantineXVI) 
