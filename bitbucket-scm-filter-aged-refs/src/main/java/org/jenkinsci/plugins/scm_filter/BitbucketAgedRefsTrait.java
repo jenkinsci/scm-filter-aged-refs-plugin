@@ -8,6 +8,7 @@ import com.cloudbees.jenkins.plugins.bitbucket.api.BitbucketBranch;
 import com.cloudbees.jenkins.plugins.bitbucket.api.BitbucketPullRequest;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
+import org.jenkinsci.Symbol;
 import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.trait.SCMBuilder;
 import jenkins.scm.api.trait.SCMSourceContext;
@@ -42,7 +43,7 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
     /**
      * Our descriptor.
      */
-    @Extension
+    @Extension @Symbol("bitbucketAgedRefsTrait")
     @SuppressWarnings("unused") // instantiated by Jenkins
     public static class DescriptorImpl extends AgedRefsTrait.AgedRefsDescriptorImpl {
 
