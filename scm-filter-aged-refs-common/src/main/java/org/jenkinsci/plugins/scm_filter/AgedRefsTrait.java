@@ -52,7 +52,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait{
          */
         @Override
         public String getDisplayName() {
-            return "Aged refs filter";
+            return "Filter by ref age";
         }
 
 
