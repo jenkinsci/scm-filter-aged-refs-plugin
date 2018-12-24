@@ -2,7 +2,6 @@ package org.jenkinsci.plugins.scm_filter;
 
 import jenkins.model.Jenkins;
 import jenkins.scm.api.SCMSource;
-import jenkins.scm.api.trait.SCMSourceTrait;
 import org.hamcrest.Matchers;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
 import org.junit.ClassRule;

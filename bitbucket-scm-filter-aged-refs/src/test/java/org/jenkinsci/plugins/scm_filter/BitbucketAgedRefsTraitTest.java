@@ -3,7 +3,6 @@ package org.jenkinsci.plugins.scm_filter;
 import com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource;
 import jenkins.model.Jenkins;
 import jenkins.scm.api.SCMSource;
-import jenkins.scm.api.trait.SCMSourceTrait;
 import org.hamcrest.Matchers;
 import org.junit.ClassRule;
 import org.junit.Rule;
