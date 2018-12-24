@@ -14,8 +14,10 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 public class GitHubAgedRefsTraitTest {
+
     @ClassRule
     public static JenkinsRule j = new JenkinsRule();
+
     @Rule
     public TestName currentTestName = new TestName();
 
@@ -29,7 +31,7 @@ public class GitHubAgedRefsTraitTest {
     }
 
     @Test
-    public void exclude_thirty_days() throws Exception {
+    public void exclude_thirty_days() {
         GitHubSCMSource instance = (GitHubSCMSource) load();
         assertThat(instance.getTraits(),
                 containsInAnyOrder(
