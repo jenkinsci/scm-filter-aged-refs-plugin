@@ -83,7 +83,7 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
                     BitbucketBranch branch = branchIterator.next();
                     long branchTS = branch.getDateMillis();
                     if (branch.getName().equals(scmHead.getName())) {
-                        return (Long.compare(branchTS, super.getAcceptableDateTimeThreshold()) < 0);
+                        return branchTS < super.getAcceptableDateTimeThreshold();
                     }
                 }
             } else if (scmHead instanceof PullRequestSCMHead) {
@@ -93,7 +93,7 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
                     BitbucketPullRequest pull = pullIterator.next();
                     if (pull.getSource().getBranch().getName().equals(scmHead.getName())) {
                         long pullTS = pull.getSource().getCommit().getDateMillis();
-                        return (Long.compare(pullTS, super.getAcceptableDateTimeThreshold()) < 0);
+                        return pullTS < super.getAcceptableDateTimeThreshold();
                     }
                 }
             }

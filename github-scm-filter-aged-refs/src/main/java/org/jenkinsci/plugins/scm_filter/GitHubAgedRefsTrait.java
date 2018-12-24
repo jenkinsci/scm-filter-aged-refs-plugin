@@ -82,7 +82,7 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                     GHBranch branch = branchIterator.next();
                     long branchTS = branch.getOwner().getCommit(branch.getSHA1()).getCommitDate().getTime();
                     if (branch.getName().equals(scmHead.getName())) {
-                        return (Long.compare(branchTS, super.getAcceptableDateTimeThreshold()) < 0);
+                        return branchTS < super.getAcceptableDateTimeThreshold();
                     }
                 }
             } else if (scmHead instanceof PullRequestSCMHead) {
@@ -92,7 +92,7 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                     GHPullRequest pull = pullIterator.next();
                     if (("PR-" + pull.getNumber()).equals(scmHead.getName())) {
                         long pullTS = pull.getHead().getCommit().getCommitShortInfo().getCommitDate().getTime();
-                        return (Long.compare(pullTS, super.getAcceptableDateTimeThreshold()) < 0);
+                        return pullTS < super.getAcceptableDateTimeThreshold();
                     }
                 }
             } else if (scmHead instanceof GitHubTagSCMHead) {
