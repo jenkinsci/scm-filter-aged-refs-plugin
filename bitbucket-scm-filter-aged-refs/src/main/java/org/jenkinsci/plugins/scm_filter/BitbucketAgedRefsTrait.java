@@ -16,7 +16,6 @@ import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 /**
  * @author witokondoria
@@ -78,9 +77,7 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead) throws IOException, InterruptedException {
             if (scmHead instanceof BranchSCMHead) {
                 Iterable<BitbucketBranch> branches = ((BitbucketSCMSourceRequest) scmSourceRequest).getBranches();
-                Iterator<BitbucketBranch> branchIterator = branches.iterator();
-                while (branchIterator.hasNext()) {
-                    BitbucketBranch branch = branchIterator.next();
+                for (BitbucketBranch branch : branches) {
                     long branchTS = branch.getDateMillis();
                     if (branch.getName().equals(scmHead.getName())) {
                         return branchTS < super.getAcceptableDateTimeThreshold();
@@ -88,9 +85,7 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
                 }
             } else if (scmHead instanceof PullRequestSCMHead) {
                 Iterable<BitbucketPullRequest> pulls = ((BitbucketSCMSourceRequest) scmSourceRequest).getPullRequests();
-                Iterator<BitbucketPullRequest> pullIterator = pulls.iterator();
-                while (pullIterator.hasNext()) {
-                    BitbucketPullRequest pull = pullIterator.next();
+                for (BitbucketPullRequest pull : pulls) {
                     if (pull.getSource().getBranch().getName().equals(scmHead.getName())) {
                         long pullTS = pull.getSource().getCommit().getDateMillis();
                         return pullTS < super.getAcceptableDateTimeThreshold();

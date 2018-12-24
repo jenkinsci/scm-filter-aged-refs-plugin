@@ -17,7 +17,6 @@ import org.kohsuke.github.GHPullRequest;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 /**
  * @author witokondoria
@@ -77,9 +76,7 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead) throws IOException, InterruptedException {
             if (scmHead instanceof BranchSCMHead) {
                 Iterable<GHBranch> branches = ((GitHubSCMSourceRequest) scmSourceRequest).getBranches();
-                Iterator<GHBranch> branchIterator = branches.iterator();
-                while (branchIterator.hasNext()) {
-                    GHBranch branch = branchIterator.next();
+                for (GHBranch branch : branches) {
                     long branchTS = branch.getOwner().getCommit(branch.getSHA1()).getCommitDate().getTime();
                     if (branch.getName().equals(scmHead.getName())) {
                         return branchTS < super.getAcceptableDateTimeThreshold();
@@ -87,9 +84,7 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                 }
             } else if (scmHead instanceof PullRequestSCMHead) {
                 Iterable<GHPullRequest> pulls = ((GitHubSCMSourceRequest) scmSourceRequest).getPullRequests();
-                Iterator<GHPullRequest> pullIterator = pulls.iterator();
-                while (pullIterator.hasNext()) {
-                    GHPullRequest pull = pullIterator.next();
+                for (GHPullRequest pull : pulls) {
                     if (("PR-" + pull.getNumber()).equals(scmHead.getName())) {
                         long pullTS = pull.getHead().getCommit().getCommitShortInfo().getCommitDate().getTime();
                         return pullTS < super.getAcceptableDateTimeThreshold();
