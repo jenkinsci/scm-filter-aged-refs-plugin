@@ -34,8 +34,8 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
 
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
-        if (this.retentionDays > 0) {
-            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(this.retentionDays));
+        if (retentionDays > 0) {
+            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(retentionDays));
         }
     }
 
@@ -44,7 +44,7 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
      */
     @Extension @Symbol("bitbucketAgedRefsTrait")
     @SuppressWarnings("unused") // instantiated by Jenkins
-    public static class DescriptorImpl extends AgedRefsTrait.AgedRefsDescriptorImpl {
+    public static class DescriptorImpl extends AgedRefsDescriptorImpl {
 
         /**
          * {@inheritDoc}
