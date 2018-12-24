@@ -59,9 +59,9 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
     /**
      * Filter that excludes references (branches or pull requests) according to its last commit modification date and the defined retentionDays.
      */
-    public static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
+    private static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
 
-        public ExcludeOldBranchesSCMHeadFilter(int retentionDays) {
+        ExcludeOldBranchesSCMHeadFilter(int retentionDays) {
             super(retentionDays);
         }
 

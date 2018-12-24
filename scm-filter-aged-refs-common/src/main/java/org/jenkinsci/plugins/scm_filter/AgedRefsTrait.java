@@ -22,7 +22,7 @@ import java.io.IOException;
  */
 public abstract class AgedRefsTrait extends SCMSourceTrait{
 
-    public int retentionDays = 0;
+    final int retentionDays;
 
     /**
      * Constructor for stapler.
@@ -45,7 +45,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait{
     /**
      * Our descriptor.
      */
-    public abstract static class AgedRefsDescriptorImpl extends SCMSourceTraitDescriptor {
+    abstract static class AgedRefsDescriptorImpl extends SCMSourceTraitDescriptor {
 
         /**
          * {@inheritDoc}
@@ -91,7 +91,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait{
      */
     public abstract static class ExcludeBranchesSCMHeadFilter extends SCMHeadFilter {
 
-        private long acceptableDateTimeThreshold;
+        private final long acceptableDateTimeThreshold;
 
         public ExcludeBranchesSCMHeadFilter(int retentionDays) {
             long now = System.currentTimeMillis();
