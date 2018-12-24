@@ -36,7 +36,7 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
         if (retentionDays > 0) {
-            context.withFilter(new GitHubAgedRefsTrait.ExcludeOldBranchesSCMHeadFilter(retentionDays));
+            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(retentionDays));
         }
     }
     /**

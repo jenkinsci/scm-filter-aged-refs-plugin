@@ -35,7 +35,7 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
         if (this.retentionDays > 0) {
-            context.withFilter(new BitbucketAgedRefsTrait.ExcludeOldBranchesSCMHeadFilter(this.retentionDays));
+            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(this.retentionDays));
         }
     }
 
