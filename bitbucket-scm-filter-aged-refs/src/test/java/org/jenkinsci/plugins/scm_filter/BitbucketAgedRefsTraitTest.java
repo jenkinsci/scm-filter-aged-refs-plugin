@@ -34,7 +34,7 @@ public class BitbucketAgedRefsTraitTest {
         BitbucketSCMSource instance = (BitbucketSCMSource) load();
         assertThat(instance.getTraits(),
                 containsInAnyOrder(
-                        Matchers.<SCMSourceTrait>allOf(
+                        Matchers.allOf(
                                 instanceOf(BitbucketAgedRefsTrait.class),
                                 hasProperty("retentionDays", is(30))
                         )
