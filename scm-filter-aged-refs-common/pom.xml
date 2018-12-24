@@ -7,14 +7,13 @@
         <artifactId>scm-filter-aged-refs-parent</artifactId>
         <version>0.3.0-SNAPSHOT</version>
     </parent>
-    
+
     <artifactId>scm-filter-aged-refs-common</artifactId>
 
     <name>Aged References SCM Filter shared components</name>
     <description>A single abstract class to refactor code</description>
 
     <dependencies>
-
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -25,7 +24,6 @@
             <artifactId>git</artifactId>
             <version>${git.version}</version>
         </dependency>
-
     </dependencies>
 
     <build>
