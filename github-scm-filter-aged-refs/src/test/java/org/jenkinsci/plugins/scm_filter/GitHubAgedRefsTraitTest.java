@@ -34,7 +34,7 @@ public class GitHubAgedRefsTraitTest {
     public void exclude_thirty_days() {
         GitHubSCMSource instance = (GitHubSCMSource) load();
         assertThat(instance.getTraits(),
-                containsInAnyOrder(
+                contains(
                         Matchers.allOf(
                                 instanceOf(GitHubAgedRefsTrait.class),
                                 hasProperty("retentionDays", is(30))
