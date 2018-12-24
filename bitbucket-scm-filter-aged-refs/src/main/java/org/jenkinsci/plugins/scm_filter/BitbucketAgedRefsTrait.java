@@ -20,7 +20,7 @@ import java.io.IOException;
 /**
  * @author witokondoria
  */
-public class BitbucketAgedRefsTrait extends AgedRefsTrait{
+public class BitbucketAgedRefsTrait extends AgedRefsTrait {
 
     /**
      * Constructor for stapler.
@@ -53,7 +53,6 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
         public boolean isApplicableToBuilder(@NonNull Class<? extends SCMBuilder> builderClass) {
             return BitbucketGitSCMBuilder.class.isAssignableFrom(builderClass);
         }
-
     }
 
     /**

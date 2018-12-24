@@ -39,6 +39,7 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
             context.withFilter(new ExcludeOldBranchesSCMHeadFilter(retentionDays));
         }
     }
+
     /**
      * Our descriptor.
      */

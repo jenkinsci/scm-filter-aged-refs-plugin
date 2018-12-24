@@ -20,14 +20,14 @@ import java.io.IOException;
 /**
  * @author witokondoria
  */
-public abstract class AgedRefsTrait extends SCMSourceTrait{
+public abstract class AgedRefsTrait extends SCMSourceTrait {
 
     final int retentionDays;
 
     /**
      * Constructor for stapler.
      */
-    public AgedRefsTrait(String retentionDays){
+    public AgedRefsTrait(String retentionDays) {
         this.retentionDays = Integer.parseInt(retentionDays);
     }
 
@@ -55,10 +55,8 @@ public abstract class AgedRefsTrait extends SCMSourceTrait{
             return "Filter by ref age";
         }
 
-
         @Restricted(NoExternalUse.class)
         public FormValidation doCheckRetentionDays(@QueryParameter String value) {
-
             FormValidation formValidation = FormValidation.ok();
 
             try {
@@ -70,7 +68,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait{
                         formValidation = FormValidation.error("Not a positive number");
                     }
                 }
-            } catch (NumberFormatException  e) {
+            } catch (NumberFormatException e) {
                 formValidation = FormValidation.error("Not a number");
             }
 
