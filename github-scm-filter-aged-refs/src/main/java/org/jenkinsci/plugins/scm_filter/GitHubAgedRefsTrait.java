@@ -26,7 +26,7 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
     /**
      * Constructor for stapler.
      *
-     * @param retentionDays
+     * @param retentionDays retention period in days
      */
     @DataBoundConstructor
     public GitHubAgedRefsTrait(String retentionDays) {

@@ -25,7 +25,7 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
     /**
      * Constructor for stapler.
      *
-     * @param retentionDays
+     * @param retentionDays retention period in days
      */
     @DataBoundConstructor
     public BitbucketAgedRefsTrait(String retentionDays) {

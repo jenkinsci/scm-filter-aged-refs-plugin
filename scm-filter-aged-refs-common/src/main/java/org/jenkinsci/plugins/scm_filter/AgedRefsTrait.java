@@ -26,6 +26,8 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
 
     /**
      * Constructor for stapler.
+     *
+     * @param retentionDays retention period in days
      */
     public AgedRefsTrait(String retentionDays) {
         this.retentionDays = Integer.parseInt(retentionDays);
