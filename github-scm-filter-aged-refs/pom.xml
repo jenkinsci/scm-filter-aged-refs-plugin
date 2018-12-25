@@ -26,5 +26,12 @@
             <artifactId>scm-filter-aged-refs-common</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <!-- optional (maybe not so) dependency of git, needed to make InjectedTest works -->
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>token-macro</artifactId>
+            <version>1.12.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 </project>
