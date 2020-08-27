@@ -10,9 +10,13 @@ import jenkins.scm.api.trait.SCMSourceRequest;
 import org.jenkinsci.plugins.github_branch_source.BranchSCMHead;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMBuilder;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSourceRequest;
+import org.jenkinsci.plugins.github_branch_source.GitHubTagSCMHead;
 import org.jenkinsci.plugins.github_branch_source.PullRequestSCMHead;
 import org.kohsuke.github.GHBranch;
+import org.kohsuke.github.GHCommit;
 import org.kohsuke.github.GHPullRequest;
+import org.kohsuke.github.GHRef;
+import org.kohsuke.github.GHTagObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.io.IOException;
@@ -92,6 +96,35 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                     if (("PR-" + pull.getNumber()).equals(scmHead.getName())) {
                         long pullTS = pull.getHead().getCommit().getCommitShortInfo().getCommitDate().getTime();
                         return (Long.compare(pullTS, super.getAcceptableDateTimeThreshold()) < 0);
+                    }
+                }
+            } else if (scmHead instanceof GitHubTagSCMHead) {
+                Iterable<GHRef> refs = ((GitHubSCMSourceRequest) scmSourceRequest).getTags();
+                Iterator<GHRef> refIterator = refs.iterator();
+                while (refIterator.hasNext()) {
+                    GHRef ref = refIterator.next();
+                    String sha = ref.getObject().getSha();
+                    long refTS = 0L;
+                    if ("tag".equalsIgnoreCase(ref.getObject().getType())) {
+                        // annotated tag object
+                        try {
+                            GHTagObject tagObject = ((GitHubSCMSourceRequest) scmSourceRequest).getRepository().getTagObject(sha);
+                            refTS = tagObject.getTagger().getDate().getTime();
+                        } catch (IOException e) {
+                            // ignore, if the tag doesn't exist, the probe will handle that correctly
+                            // we just need enough of a date value to allow for probing
+                        }
+                    } else {
+                        try {
+                            GHCommit commit = ((GitHubSCMSourceRequest) scmSourceRequest).getRepository().getCommit(sha);
+                            refTS = commit.getCommitDate().getTime();
+                        } catch (IOException e) {
+                            // ignore, if the tag doesn't exist, the probe will handle that correctly
+                            // we just need enough of a date value to allow for probing
+                        }
+                    }
+                    if (ref.getRef().equals("refs/tags/" + scmHead.getName())) {
+                        return (Long.compare(refTS, super.getAcceptableDateTimeThreshold()) < 0);
                     }
                 }
             }
