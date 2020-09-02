@@ -10,6 +10,7 @@ import jenkins.scm.api.trait.SCMSourceRequest;
 import org.jenkinsci.plugins.github_branch_source.BranchSCMHead;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMBuilder;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSourceRequest;
+import org.jenkinsci.plugins.github_branch_source.GitHubTagSCMHead;
 import org.jenkinsci.plugins.github_branch_source.PullRequestSCMHead;
 import org.kohsuke.github.GHBranch;
 import org.kohsuke.github.GHPullRequest;
@@ -94,6 +95,9 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                         return (Long.compare(pullTS, super.getAcceptableDateTimeThreshold()) < 0);
                     }
                 }
+            } else if (scmHead instanceof GitHubTagSCMHead) {
+                long refTS = ((GitHubTagSCMHead) scmHead).getTimestamp();
+                return (Long.compare(refTS, super.getAcceptableDateTimeThreshold()) < 0);
             }
             return false;
         }
