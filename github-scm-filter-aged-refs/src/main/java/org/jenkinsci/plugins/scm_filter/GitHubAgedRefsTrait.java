@@ -57,7 +57,7 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
     }
 
     /**
-     * Filter that excludes references (branches or pull requests) according to its last commit modification date and the defined retentionDays.
+     * Filter that excludes references (branches, pull requests, tags) according to their last commit modification date and the defined retentionDays.
      */
     private static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
 
@@ -84,8 +84,8 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                     }
                 }
             } else if (scmHead instanceof GitHubTagSCMHead) {
-                long refTS = ((GitHubTagSCMHead) scmHead).getTimestamp();
-                return (Long.compare(refTS, super.getAcceptableDateTimeThreshold()) < 0);
+                long tagTS = ((GitHubTagSCMHead) scmHead).getTimestamp();
+                return tagTS < super.getAcceptableDateTimeThreshold();
             }
             return false;
         }
