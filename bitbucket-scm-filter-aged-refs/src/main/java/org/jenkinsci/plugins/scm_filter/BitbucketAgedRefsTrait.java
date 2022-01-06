@@ -1,6 +1,7 @@
 package org.jenkinsci.plugins.scm_filter;
 
-import com.cloudbees.jenkins.plugins.bitbucket.BitbucketGitSCMBuilder;
+import com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource;
+import com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSourceContext;
 import com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSourceRequest;
 import com.cloudbees.jenkins.plugins.bitbucket.BranchSCMHead;
 import com.cloudbees.jenkins.plugins.bitbucket.PullRequestSCMHead;
@@ -9,7 +10,7 @@ import com.cloudbees.jenkins.plugins.bitbucket.api.BitbucketPullRequest;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import jenkins.scm.api.SCMHead;
-import jenkins.scm.api.trait.SCMBuilder;
+import jenkins.scm.api.SCMSource;
 import jenkins.scm.api.trait.SCMSourceContext;
 import jenkins.scm.api.trait.SCMSourceRequest;
 import org.jenkinsci.Symbol;
@@ -46,12 +47,14 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
     @SuppressWarnings("unused") // instantiated by Jenkins
     public static class DescriptorImpl extends AgedRefsDescriptorImpl {
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
-        public boolean isApplicableToBuilder(@NonNull Class<? extends SCMBuilder> builderClass) {
-            return BitbucketGitSCMBuilder.class.isAssignableFrom(builderClass);
+        public Class<? extends SCMSourceContext> getContextClass() {
+            return BitbucketSCMSourceContext.class;
+        }
+
+        @Override
+        public Class<? extends SCMSource> getSourceClass() {
+            return BitbucketSCMSource.class;
         }
     }
 
