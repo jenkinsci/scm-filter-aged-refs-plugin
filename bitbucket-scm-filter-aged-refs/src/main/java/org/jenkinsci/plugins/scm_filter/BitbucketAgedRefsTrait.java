@@ -8,25 +8,24 @@ import com.cloudbees.jenkins.plugins.bitbucket.api.BitbucketBranch;
 import com.cloudbees.jenkins.plugins.bitbucket.api.BitbucketPullRequest;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
-import org.jenkinsci.Symbol;
 import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.trait.SCMBuilder;
 import jenkins.scm.api.trait.SCMSourceContext;
 import jenkins.scm.api.trait.SCMSourceRequest;
+import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 import java.io.IOException;
-import java.util.Iterator;
 
 /**
  * @author witokondoria
  */
-public class BitbucketAgedRefsTrait extends AgedRefsTrait{
+public class BitbucketAgedRefsTrait extends AgedRefsTrait {
 
     /**
      * Constructor for stapler.
      *
-     * @param retentionDays
+     * @param retentionDays retention period in days
      */
     @DataBoundConstructor
     public BitbucketAgedRefsTrait(String retentionDays) {
@@ -35,8 +34,8 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
 
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
-        if (this.retentionDays > 0) {
-            context.withFilter(new BitbucketAgedRefsTrait.ExcludeOldBranchesSCMHeadFilter(this.retentionDays));
+        if (retentionDays > 0) {
+            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(retentionDays));
         }
     }
 
@@ -45,15 +44,7 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
      */
     @Extension @Symbol("bitbucketAgedRefsTrait")
     @SuppressWarnings("unused") // instantiated by Jenkins
-    public static class DescriptorImpl extends AgedRefsTrait.AgedRefsDescriptorImpl {
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public String getDisplayName() {
-            return super.getDisplayName();
-        }
+    public static class DescriptorImpl extends AgedRefsDescriptorImpl {
 
         /**
          * {@inheritDoc}
@@ -62,15 +53,14 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
         public boolean isApplicableToBuilder(@NonNull Class<? extends SCMBuilder> builderClass) {
             return BitbucketGitSCMBuilder.class.isAssignableFrom(builderClass);
         }
-
     }
 
     /**
      * Filter that excludes references (branches or pull requests) according to its last commit modification date and the defined retentionDays.
      */
-    public static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
+    private static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
 
-        public ExcludeOldBranchesSCMHeadFilter(int retentionDays) {
+        ExcludeOldBranchesSCMHeadFilter(int retentionDays) {
             super(retentionDays);
         }
 
@@ -78,22 +68,18 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait{
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead) throws IOException, InterruptedException {
             if (scmHead instanceof BranchSCMHead) {
                 Iterable<BitbucketBranch> branches = ((BitbucketSCMSourceRequest) scmSourceRequest).getBranches();
-                Iterator<BitbucketBranch> branchIterator = branches.iterator();
-                while (branchIterator.hasNext()) {
-                    BitbucketBranch branch = branchIterator.next();
+                for (BitbucketBranch branch : branches) {
                     long branchTS = branch.getDateMillis();
                     if (branch.getName().equals(scmHead.getName())) {
-                        return (Long.compare(branchTS, super.getAcceptableDateTimeThreshold()) < 0);
+                        return branchTS < super.getAcceptableDateTimeThreshold();
                     }
                 }
             } else if (scmHead instanceof PullRequestSCMHead) {
                 Iterable<BitbucketPullRequest> pulls = ((BitbucketSCMSourceRequest) scmSourceRequest).getPullRequests();
-                Iterator<BitbucketPullRequest> pullIterator = pulls.iterator();
-                while (pullIterator.hasNext()) {
-                    BitbucketPullRequest pull = pullIterator.next();
+                for (BitbucketPullRequest pull : pulls) {
                     if (pull.getSource().getBranch().getName().equals(scmHead.getName())) {
                         long pullTS = pull.getSource().getCommit().getDateMillis();
-                        return (Long.compare(pullTS, super.getAcceptableDateTimeThreshold()) < 0);
+                        return pullTS < super.getAcceptableDateTimeThreshold();
                     }
                 }
             }

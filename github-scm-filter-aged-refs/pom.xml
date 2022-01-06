@@ -12,11 +12,10 @@
     <packaging>hpi</packaging>
 
     <name>GitHub Aged References SCM Filter Plugin</name>
-    <url>https://wiki.jenkins-ci.org/display/JENKINS/GitHub+Aged+References+SCM+Filter+Plugin</url>
     <description>Adds a filtering trait according to a ref date to an existing GitHub Branch Source Plugin configuration.</description>
+    <url>https://wiki.jenkins.io/display/JENKINS/GitHub+Aged+References+SCM+Filter+Plugin</url>
 
     <dependencies>
-
         <dependency>
             <groupId>org.jenkins-ci.plugins</groupId>
             <artifactId>github-branch-source</artifactId>
@@ -27,7 +26,12 @@
             <artifactId>scm-filter-aged-refs-common</artifactId>
             <version>${project.version}</version>
         </dependency>
-
+        <!-- optional (maybe not so) dependency of git, needed to make InjectedTest works -->
+        <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>token-macro</artifactId>
+            <version>1.12.1</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
-
 </project>

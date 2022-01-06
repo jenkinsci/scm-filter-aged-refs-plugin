@@ -3,7 +3,6 @@ package org.jenkinsci.plugins.scm_filter;
 import com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource;
 import jenkins.model.Jenkins;
 import jenkins.scm.api.SCMSource;
-import jenkins.scm.api.trait.SCMSourceTrait;
 import org.hamcrest.Matchers;
 import org.junit.ClassRule;
 import org.junit.Rule;
@@ -15,8 +14,10 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.assertThat;
 
 public class BitbucketAgedRefsTraitTest {
+
     @ClassRule
     public static JenkinsRule j = new JenkinsRule();
+
     @Rule
     public TestName currentTestName = new TestName();
 
@@ -30,11 +31,11 @@ public class BitbucketAgedRefsTraitTest {
     }
 
     @Test
-    public void exclude_thirty_days() throws Exception {
+    public void exclude_thirty_days() {
         BitbucketSCMSource instance = (BitbucketSCMSource) load();
         assertThat(instance.getTraits(),
-                containsInAnyOrder(
-                        Matchers.<SCMSourceTrait>allOf(
+                contains(
+                        Matchers.allOf(
                                 instanceOf(BitbucketAgedRefsTrait.class),
                                 hasProperty("retentionDays", is(30))
                         )
