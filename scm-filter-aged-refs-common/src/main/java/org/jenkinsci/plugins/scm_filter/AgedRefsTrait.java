@@ -1,8 +1,6 @@
 package org.jenkinsci.plugins.scm_filter;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import hudson.plugins.git.GitSCM;
-import hudson.scm.SCMDescriptor;
 import hudson.util.FormValidation;
 import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.trait.SCMHeadFilter;
@@ -75,14 +73,6 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
             }
 
             return formValidation;
-        }
-
-        /**
-         * {@inheritDoc}
-         */
-        @Override
-        public boolean isApplicableToSCM(@NonNull SCMDescriptor<?> scm) {
-            return scm instanceof GitSCM.DescriptorImpl;
         }
     }
 
