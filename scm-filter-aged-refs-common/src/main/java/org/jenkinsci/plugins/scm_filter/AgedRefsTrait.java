@@ -77,7 +77,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
     }
 
     /**
-     * Filter that excludes references (branches or pull requests) according to its last commit modification date and the defined retentionDays.
+     * Filter that excludes references (branches, pull requests, tags) according to their last commit modification date and the defined retentionDays.
      */
     public abstract static class ExcludeBranchesSCMHeadFilter extends SCMHeadFilter {
 

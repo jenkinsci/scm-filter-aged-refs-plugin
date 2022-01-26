@@ -3,6 +3,7 @@ package org.jenkinsci.plugins.scm_filter;
 import com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource;
 import com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSourceContext;
 import com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSourceRequest;
+import com.cloudbees.jenkins.plugins.bitbucket.BitbucketTagSCMHead;
 import com.cloudbees.jenkins.plugins.bitbucket.BranchSCMHead;
 import com.cloudbees.jenkins.plugins.bitbucket.PullRequestSCMHead;
 import com.cloudbees.jenkins.plugins.bitbucket.api.BitbucketBranch;
@@ -62,7 +63,7 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
     }
 
     /**
-     * Filter that excludes references (branches or pull requests) according to its last commit modification date and the defined retentionDays.
+     * Filter that excludes references (branches, pull requests, tags) according to their last commit modification date and the defined retentionDays.
      */
     private static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
 
@@ -88,6 +89,9 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
                         return pullTS < super.getAcceptableDateTimeThreshold();
                     }
                 }
+            } else if (scmHead instanceof BitbucketTagSCMHead) {
+                long tagTS = ((BitbucketTagSCMHead) scmHead).getTimestamp();
+                return tagTS < super.getAcceptableDateTimeThreshold();
             }
             return false;
         }
