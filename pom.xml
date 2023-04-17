@@ -14,7 +14,7 @@
 
     <name>Aged References SCM Filter</name>
     <description>Reactor adding an aged filtering strategy to several SCM implementations.</description>
-    <url>https://wiki.jenkins.io/display/JENKINS/Aged+References+SCM+Filter+Plugins</url>
+    <url>https://plugins.jenkins.io/github-scm-filter-aged-refs/</url>
 
     <licenses>
         <license>
