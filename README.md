@@ -4,8 +4,8 @@ This is a collection of extensions for several branch source Jenkins plugins.
 
 It provides filters for
 
-- [Bitbucket]: Filtering references (branches and pull requests)
-- [GitHub]: Filtering references (branches and pull requests)
+- [Bitbucket]: Filtering references (branches, tags and pull requests)
+- [GitHub]: Filtering references (branches, tags and pull requests)
 
 This filter will ignore references (branches and pull requests) where its last
 commit creation date is older than the defined threshold (in days). Ignored
