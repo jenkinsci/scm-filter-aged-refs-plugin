@@ -13,7 +13,6 @@
 
     <name>GitHub Aged References SCM Filter Plugin</name>
     <description>Adds a filtering trait according to a ref date to an existing GitHub Branch Source Plugin configuration.</description>
-    <url>https://wiki.jenkins.io/display/JENKINS/GitHub+Aged+References+SCM+Filter+Plugin</url>
 
     <dependencies>
         <dependency>

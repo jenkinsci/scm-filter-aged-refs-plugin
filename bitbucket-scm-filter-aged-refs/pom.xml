@@ -13,7 +13,6 @@
 
     <name>Bitbucket Aged References SCM Filter Plugin</name>
     <description>Adds a filtering trait according to a ref date to an existing Bitbucket Branch Source Plugin configuration.</description>
-    <url>https://wiki.jenkins.io/display/JENKINS/Bitbucket+Aged+References+SCM+Filter+Plugin</url>
 
     <dependencyManagement>
         <dependencies>
