@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>scm-filter-aged-refs-parent</artifactId>
-        <version>${revision}${changelist}</version>
+        <version>${changelist}</version>
     </parent>
 
     <artifactId>github-scm-filter-aged-refs</artifactId>

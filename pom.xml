@@ -9,7 +9,7 @@
     </parent>
 
     <artifactId>scm-filter-aged-refs-parent</artifactId>
-    <version>${revision}${changelist}</version>
+    <version>${changelist}</version>
     <packaging>pom</packaging>
 
     <name>Aged References SCM Filter</name>
@@ -24,8 +24,7 @@
     </licenses>
 
     <properties>
-        <revision>0.3.0</revision>
-        <changelist>-SNAPSHOT</changelist>
+        <changelist>999999-SNAPSHOT</changelist>
         <gitHubRepo>jenkinsci/scm-filter-aged-refs-plugin</gitHubRepo>
         <jenkins.version>2.32.3</jenkins.version>
         <bitbucket-branch-source.version>2.2.11</bitbucket-branch-source.version>
