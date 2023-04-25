@@ -1,0 +1,5 @@
+<?jelly escape-by-default='true'?>
+<div>
+  Adds a filtering trait according to a ref date to an existing GitHub Branch
+  Source Plugin configuration.
+</div>

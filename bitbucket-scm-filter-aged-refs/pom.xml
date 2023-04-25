@@ -12,17 +12,6 @@
     <packaging>hpi</packaging>
 
     <name>Bitbucket Aged References SCM Filter Plugin</name>
-    <description>Adds a filtering trait according to a ref date to an existing Bitbucket Branch Source Plugin configuration.</description>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.jcraft</groupId>
-                <artifactId>jsch</artifactId>
-                <version>0.1.53</version>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <dependencies>
         <dependency>
