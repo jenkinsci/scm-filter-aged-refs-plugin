@@ -47,9 +47,12 @@
 
     <developers>
         <developer>
-            <id>witokodoria</id>
-            <name>Javier Delgado</name>
-            <email>witokondoria@gmail.com</email>
+            <id>TobiX</id>
+            <name>Tobias Gruetzmacher</name>
+            <email>tobias-git@23.gs</email>
+            <roles>
+                <role>Maintainer</role>
+            </roles>
         </developer>
     </developers>
 
