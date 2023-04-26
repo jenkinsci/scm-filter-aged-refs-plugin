@@ -1,5 +1,8 @@
 package org.jenkinsci.plugins.scm_filter;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+
 import jenkins.model.Jenkins;
 import jenkins.scm.api.SCMSource;
 import org.hamcrest.Matchers;
@@ -9,9 +12,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import org.jvnet.hudson.test.JenkinsRule;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 
 public class GitHubAgedRefsTraitTest {
 
@@ -26,20 +26,15 @@ public class GitHubAgedRefsTraitTest {
     }
 
     private SCMSource load(String dataSet) {
-        return (GitHubSCMSource) Jenkins.XSTREAM2.fromXML(
-                getClass().getResource(getClass().getSimpleName() + "/" + dataSet + ".xml"));
+        return (GitHubSCMSource)
+                Jenkins.XSTREAM2.fromXML(getClass().getResource(getClass().getSimpleName() + "/" + dataSet + ".xml"));
     }
 
     @Test
     public void exclude_thirty_days() {
         GitHubSCMSource instance = (GitHubSCMSource) load();
-        assertThat(instance.getTraits(),
-                contains(
-                        Matchers.allOf(
-                                instanceOf(GitHubAgedRefsTrait.class),
-                                hasProperty("retentionDays", is(30))
-                        )
-                )
-        );
+        assertThat(
+                instance.getTraits(),
+                contains(Matchers.allOf(instanceOf(GitHubAgedRefsTrait.class), hasProperty("retentionDays", is(30)))));
     }
 }

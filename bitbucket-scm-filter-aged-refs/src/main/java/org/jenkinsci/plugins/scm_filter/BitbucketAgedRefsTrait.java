@@ -10,6 +10,7 @@ import com.cloudbees.jenkins.plugins.bitbucket.api.BitbucketBranch;
 import com.cloudbees.jenkins.plugins.bitbucket.api.BitbucketPullRequest;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
+import java.io.IOException;
 import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.SCMSource;
 import jenkins.scm.api.trait.SCMSourceContext;
@@ -17,8 +18,6 @@ import jenkins.scm.api.trait.SCMSourceRequest;
 import jenkins.scm.impl.trait.Selection;
 import org.jenkinsci.Symbol;
 import org.kohsuke.stapler.DataBoundConstructor;
-
-import java.io.IOException;
 
 /**
  * @author witokondoria
@@ -72,7 +71,8 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
         }
 
         @Override
-        public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead) throws IOException, InterruptedException {
+        public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
+                throws IOException, InterruptedException {
             if (scmHead instanceof BranchSCMHead) {
                 Iterable<BitbucketBranch> branches = ((BitbucketSCMSourceRequest) scmSourceRequest).getBranches();
                 for (BitbucketBranch branch : branches) {

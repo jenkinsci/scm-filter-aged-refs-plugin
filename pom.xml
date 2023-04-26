@@ -1,99 +1,98 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+  <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <groupId>org.jenkins-ci.plugins</groupId>
-        <artifactId>plugin</artifactId>
-        <version>4.61</version>
-    </parent>
+  <parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>plugin</artifactId>
+    <version>4.61</version>
+  </parent>
 
-    <artifactId>scm-filter-aged-refs-parent</artifactId>
-    <version>${changelist}</version>
-    <packaging>pom</packaging>
+  <artifactId>scm-filter-aged-refs-parent</artifactId>
+  <version>${changelist}</version>
+  <packaging>pom</packaging>
 
-    <name>Aged References SCM Filter</name>
-    <description>Reactor adding an aged filtering strategy to several SCM implementations.</description>
-    <url>https://plugins.jenkins.io/github-scm-filter-aged-refs/</url>
+  <name>Aged References SCM Filter</name>
+  <description>Reactor adding an aged filtering strategy to several SCM implementations.</description>
+  <url>https://plugins.jenkins.io/github-scm-filter-aged-refs/</url>
 
-    <licenses>
-        <license>
-            <name>MIT</name>
-            <url>https://opensource.org/licenses/MIT</url>
-        </license>
-    </licenses>
+  <licenses>
+    <license>
+      <name>MIT</name>
+      <url>https://opensource.org/licenses/MIT</url>
+    </license>
+  </licenses>
 
-    <properties>
-        <changelist>999999-SNAPSHOT</changelist>
-        <gitHubRepo>jenkinsci/scm-filter-aged-refs-plugin</gitHubRepo>
-        <jenkins.version>2.361.4</jenkins.version>
-        <bitbucket-branch-source.version>2.9.1</bitbucket-branch-source.version>
-    </properties>
+  <developers>
+    <developer>
+      <id>TobiX</id>
+      <name>Tobias Gruetzmacher</name>
+      <email>tobias-git@23.gs</email>
+      <roles>
+        <role>Maintainer</role>
+      </roles>
+    </developer>
+  </developers>
 
-    <scm child.scm.connection.inherit.append.path="false"
-        child.scm.developerConnection.inherit.append.path="false"
-        child.scm.url.inherit.append.path="false">
-        <connection>scm:git:https://github.com/${gitHubRepo}.git</connection>
-        <developerConnection>scm:git:https://github.com/${gitHubRepo}.git</developerConnection>
-        <tag>${scmTag}</tag>
-        <url>https://github.com/${gitHubRepo}</url>
-    </scm>
+  <modules>
+    <module>scm-filter-aged-refs-common</module>
+    <module>bitbucket-scm-filter-aged-refs</module>
+    <module>github-scm-filter-aged-refs</module>
+  </modules>
 
-    <developers>
-        <developer>
-            <id>TobiX</id>
-            <name>Tobias Gruetzmacher</name>
-            <email>tobias-git@23.gs</email>
-            <roles>
-                <role>Maintainer</role>
-            </roles>
-        </developer>
-    </developers>
+  <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
+    <connection>scm:git:https://github.com/${gitHubRepo}.git</connection>
+    <developerConnection>scm:git:https://github.com/${gitHubRepo}.git</developerConnection>
+    <tag>${scmTag}</tag>
+    <url>https://github.com/${gitHubRepo}</url>
+  </scm>
 
-    <modules>
-        <module>scm-filter-aged-refs-common</module>
-        <module>bitbucket-scm-filter-aged-refs</module>
-        <module>github-scm-filter-aged-refs</module>
-    </modules>
+  <properties>
+    <changelist>999999-SNAPSHOT</changelist>
+    <gitHubRepo>jenkinsci/scm-filter-aged-refs-plugin</gitHubRepo>
+    <jenkins.version>2.361.4</jenkins.version>
+    <bitbucket-branch-source.version>2.9.1</bitbucket-branch-source.version>
+    <spotless.check.skip>false</spotless.check.skip>
+  </properties>
 
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>io.jenkins.tools.bom</groupId>
-                <artifactId>bom-2.361.x</artifactId>
-                <version>2025.v816d28f1e04f</version>
-                <scope>import</scope>
-                <type>pom</type>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
+  <dependencyManagement>
     <dependencies>
-        <dependency>
-            <groupId>org.jenkins-ci.plugins</groupId>
-            <artifactId>git</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>io.jenkins.plugins</groupId>
-            <artifactId>commons-lang3-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.jenkins-ci.plugins.workflow</groupId>
-            <artifactId>workflow-multibranch</artifactId>
-            <scope>test</scope>
-        </dependency>
+      <dependency>
+        <groupId>io.jenkins.tools.bom</groupId>
+        <artifactId>bom-2.361.x</artifactId>
+        <version>2025.v816d28f1e04f</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
     </dependencies>
+  </dependencyManagement>
 
-    <repositories>
-        <repository>
-            <id>repo.jenkins-ci.org</id>
-            <url>https://repo.jenkins-ci.org/public/</url>
-        </repository>
-    </repositories>
-    <pluginRepositories>
-        <pluginRepository>
-            <id>repo.jenkins-ci.org</id>
-            <url>https://repo.jenkins-ci.org/public/</url>
-        </pluginRepository>
-    </pluginRepositories>
+  <dependencies>
+    <dependency>
+      <groupId>io.jenkins.plugins</groupId>
+      <artifactId>commons-lang3-api</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>git</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins.workflow</groupId>
+      <artifactId>workflow-multibranch</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+  <repositories>
+    <repository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </repository>
+  </repositories>
+  <pluginRepositories>
+    <pluginRepository>
+      <id>repo.jenkins-ci.org</id>
+      <url>https://repo.jenkins-ci.org/public/</url>
+    </pluginRepository>
+  </pluginRepositories>
 </project>

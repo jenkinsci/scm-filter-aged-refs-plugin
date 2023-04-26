@@ -2,6 +2,7 @@ package org.jenkinsci.plugins.scm_filter;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.util.FormValidation;
+import java.io.IOException;
 import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.trait.SCMHeadFilter;
 import jenkins.scm.api.trait.SCMSourceContext;
@@ -12,8 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.QueryParameter;
-
-import java.io.IOException;
 
 /**
  * @author witokondoria
@@ -93,6 +92,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
         }
 
         @Override
-        abstract public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead) throws IOException, InterruptedException;
+        public abstract boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
+                throws IOException, InterruptedException;
     }
 }

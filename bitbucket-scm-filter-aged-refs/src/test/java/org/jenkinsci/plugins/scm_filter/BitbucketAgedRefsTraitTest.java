@@ -1,5 +1,8 @@
 package org.jenkinsci.plugins.scm_filter;
 
+import static org.hamcrest.Matchers.*;
+import static org.junit.Assert.assertThat;
+
 import com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource;
 import jenkins.model.Jenkins;
 import jenkins.scm.api.SCMSource;
@@ -9,9 +12,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.TestName;
 import org.jvnet.hudson.test.JenkinsRule;
-
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
 
 public class BitbucketAgedRefsTraitTest {
 
@@ -26,20 +26,16 @@ public class BitbucketAgedRefsTraitTest {
     }
 
     private SCMSource load(String dataSet) {
-        return (BitbucketSCMSource) Jenkins.XSTREAM2.fromXML(
-                getClass().getResource(getClass().getSimpleName() + "/" + dataSet + ".xml"));
+        return (BitbucketSCMSource)
+                Jenkins.XSTREAM2.fromXML(getClass().getResource(getClass().getSimpleName() + "/" + dataSet + ".xml"));
     }
 
     @Test
     public void exclude_thirty_days() {
         BitbucketSCMSource instance = (BitbucketSCMSource) load();
-        assertThat(instance.getTraits(),
-                contains(
-                        Matchers.allOf(
-                                instanceOf(BitbucketAgedRefsTrait.class),
-                                hasProperty("retentionDays", is(30))
-                        )
-                )
-        );
+        assertThat(
+                instance.getTraits(),
+                contains(Matchers.allOf(
+                        instanceOf(BitbucketAgedRefsTrait.class), hasProperty("retentionDays", is(30)))));
     }
 }
