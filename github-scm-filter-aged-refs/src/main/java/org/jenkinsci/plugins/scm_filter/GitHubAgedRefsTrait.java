@@ -2,6 +2,7 @@ package org.jenkinsci.plugins.scm_filter;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
+import java.io.IOException;
 import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.SCMSource;
 import jenkins.scm.api.trait.SCMSourceContext;
@@ -17,8 +18,6 @@ import org.jenkinsci.plugins.github_branch_source.PullRequestSCMHead;
 import org.kohsuke.github.GHBranch;
 import org.kohsuke.github.GHPullRequest;
 import org.kohsuke.stapler.DataBoundConstructor;
-
-import java.io.IOException;
 
 /**
  * @author witokondoria
@@ -72,11 +71,15 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
         }
 
         @Override
-        public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead) throws IOException, InterruptedException {
+        public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
+                throws IOException, InterruptedException {
             if (scmHead instanceof BranchSCMHead) {
                 Iterable<GHBranch> branches = ((GitHubSCMSourceRequest) scmSourceRequest).getBranches();
                 for (GHBranch branch : branches) {
-                    long branchTS = branch.getOwner().getCommit(branch.getSHA1()).getCommitDate().getTime();
+                    long branchTS = branch.getOwner()
+                            .getCommit(branch.getSHA1())
+                            .getCommitDate()
+                            .getTime();
                     if (branch.getName().equals(scmHead.getName())) {
                         return branchTS < super.getAcceptableDateTimeThreshold();
                     }
@@ -85,7 +88,11 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                 Iterable<GHPullRequest> pulls = ((GitHubSCMSourceRequest) scmSourceRequest).getPullRequests();
                 for (GHPullRequest pull : pulls) {
                     if (("PR-" + pull.getNumber()).equals(scmHead.getName())) {
-                        long pullTS = pull.getHead().getCommit().getCommitShortInfo().getCommitDate().getTime();
+                        long pullTS = pull.getHead()
+                                .getCommit()
+                                .getCommitShortInfo()
+                                .getCommitDate()
+                                .getTime();
                         return pullTS < super.getAcceptableDateTimeThreshold();
                     }
                 }
