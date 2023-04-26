@@ -5,7 +5,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>4.39</version>
+        <version>4.61</version>
     </parent>
 
     <artifactId>scm-filter-aged-refs-parent</artifactId>
@@ -26,10 +26,8 @@
     <properties>
         <changelist>999999-SNAPSHOT</changelist>
         <gitHubRepo>jenkinsci/scm-filter-aged-refs-plugin</gitHubRepo>
-        <jenkins.version>2.164.3</jenkins.version>
+        <jenkins.version>2.361.4</jenkins.version>
         <bitbucket-branch-source.version>2.9.1</bitbucket-branch-source.version>
-        <github-branch-source.version>2.3.0</github-branch-source.version>
-        <java.level>8</java.level>
     </properties>
 
     <scm child.scm.connection.inherit.append.path="false"
@@ -62,24 +60,26 @@
         <dependencies>
             <dependency>
                 <groupId>io.jenkins.tools.bom</groupId>
-                <artifactId>bom-2.164.x</artifactId>
-                <version>10</version>
+                <artifactId>bom-2.361.x</artifactId>
+                <version>2025.v816d28f1e04f</version>
                 <scope>import</scope>
                 <type>pom</type>
-            </dependency>
-            <dependency>
-                <groupId>javax.mail</groupId>
-                <artifactId>mail</artifactId>
-                <version>1.4.7</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
         <dependency>
+            <groupId>org.jenkins-ci.plugins</groupId>
+            <artifactId>git</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.jenkins.plugins</groupId>
+            <artifactId>commons-lang3-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.jenkins-ci.plugins.workflow</groupId>
             <artifactId>workflow-multibranch</artifactId>
-            <version>2.21</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
