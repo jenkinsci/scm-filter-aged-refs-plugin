@@ -9,14 +9,10 @@ import jenkins.scm.api.trait.SCMSourceContext;
 import jenkins.scm.api.trait.SCMSourceRequest;
 import jenkins.scm.api.trait.SCMSourceTrait;
 import jenkins.scm.api.trait.SCMSourceTraitDescriptor;
-import org.apache.commons.lang3.StringUtils;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.QueryParameter;
 
-/**
- * @author witokondoria
- */
 public abstract class AgedRefsTrait extends SCMSourceTrait {
 
     final int retentionDays;
@@ -26,7 +22,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
      *
      * @param retentionDays retention period in days
      */
-    public AgedRefsTrait(String retentionDays) {
+    protected AgedRefsTrait(String retentionDays) {
         this.retentionDays = Integer.parseInt(retentionDays);
     }
 
@@ -35,9 +31,6 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
         return this.retentionDays;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     protected abstract void decorateContext(SCMSourceContext<?, ?> context);
 
@@ -46,10 +39,8 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
      */
     abstract static class AgedRefsDescriptorImpl extends SCMSourceTraitDescriptor {
 
-        /**
-         * {@inheritDoc}
-         */
         @Override
+        @NonNull
         public String getDisplayName() {
             return "Filter by ref age";
         }
@@ -59,7 +50,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
             FormValidation formValidation = FormValidation.ok();
 
             try {
-                if (StringUtils.isBlank(value)) {
+                if (value == null || value.isBlank()) {
                     formValidation = FormValidation.error("Not a number");
                 } else {
                     int val = Integer.parseInt(value);
@@ -82,7 +73,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
 
         private final long acceptableDateTimeThreshold;
 
-        public ExcludeBranchesSCMHeadFilter(int retentionDays) {
+        protected ExcludeBranchesSCMHeadFilter(int retentionDays) {
             long now = System.currentTimeMillis();
             acceptableDateTimeThreshold = now - (24L * 60 * 60 * 1000 * retentionDays);
         }
