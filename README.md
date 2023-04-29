@@ -6,6 +6,7 @@ It provides filters for
 
 - [Bitbucket]: Filtering references (branches, tags and pull requests)
 - [GitHub]: Filtering references (branches, tags and pull requests)
+- [GitLab]: Filtering references (branches, tags and pull requests)
 
 This filter will ignore references (branches and pull requests) where its last
 commit creation date is older than the defined threshold (in days). Ignored
@@ -14,6 +15,7 @@ deletion on the next full repository scan.
 
 [Bitbucket]: https://plugins.jenkins.io/cloudbees-bitbucket-branch-source/
 [GitHub]: https://plugins.jenkins.io/github-branch-source/
+[GitLab]: https://plugins.jenkins.io/gitlab-branch-source/
 
 ## Usage
 

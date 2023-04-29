@@ -9,12 +9,7 @@ import jenkins.scm.api.trait.SCMSourceContext;
 import jenkins.scm.api.trait.SCMSourceRequest;
 import jenkins.scm.impl.trait.Selection;
 import org.jenkinsci.Symbol;
-import org.jenkinsci.plugins.github_branch_source.BranchSCMHead;
-import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
-import org.jenkinsci.plugins.github_branch_source.GitHubSCMSourceContext;
-import org.jenkinsci.plugins.github_branch_source.GitHubSCMSourceRequest;
-import org.jenkinsci.plugins.github_branch_source.GitHubTagSCMHead;
-import org.jenkinsci.plugins.github_branch_source.PullRequestSCMHead;
+import org.jenkinsci.plugins.github_branch_source.*;
 import org.kohsuke.github.GHBranch;
 import org.kohsuke.github.GHPullRequest;
 import org.kohsuke.stapler.DataBoundConstructor;
@@ -72,7 +67,7 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
 
         @Override
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
-                throws IOException, InterruptedException {
+                throws IOException {
             if (scmHead instanceof BranchSCMHead) {
                 Iterable<GHBranch> branches = ((GitHubSCMSourceRequest) scmSourceRequest).getBranches();
                 for (GHBranch branch : branches) {
@@ -96,11 +91,8 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                         return pullTS < super.getAcceptableDateTimeThreshold();
                     }
                 }
-            } else if (scmHead instanceof GitHubTagSCMHead) {
-                long tagTS = ((GitHubTagSCMHead) scmHead).getTimestamp();
-                return tagTS < super.getAcceptableDateTimeThreshold();
             }
-            return false;
+            return super.isExcluded(scmSourceRequest, scmHead);
         }
     }
 }

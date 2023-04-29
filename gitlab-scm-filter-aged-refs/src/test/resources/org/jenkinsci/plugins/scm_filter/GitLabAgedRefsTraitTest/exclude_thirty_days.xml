@@ -1,0 +1,15 @@
+<io.jenkins.plugins.gitlabbranchsource.GitLabSCMSource>
+    <id>107b7146-fbf2-4ba7-a6c7-e48626e6e4b5</id>
+    <serverName>default</serverName>
+    <projectOwner>group/subgroup</projectOwner>
+    <projectPath>group/subgroup/jenkins-plugin</projectPath>
+    <credentialsId>foo</credentialsId>
+    <traits>
+        <org.jenkinsci.plugins.scm__filter.GitLabAgedRefsTrait plugin="gitlab-scm-filter-aged-refs@999999-SNAPSHOT">
+            <retentionDays>30</retentionDays>
+        </org.jenkinsci.plugins.scm__filter.GitLabAgedRefsTrait>
+    </traits>
+    <sshRemote>git@gitlab.com:group/subgroup/jenkins-plugin.git</sshRemote>
+    <httpRemote>https://gitlab.com/group/subgroup/jenkins-plugin.git</httpRemote>
+    <projectId>99999</projectId>
+</io.jenkins.plugins.gitlabbranchsource.GitLabSCMSource>

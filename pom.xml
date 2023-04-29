@@ -38,6 +38,7 @@
     <module>scm-filter-aged-refs-common</module>
     <module>bitbucket-scm-filter-aged-refs</module>
     <module>github-scm-filter-aged-refs</module>
+    <module>gitlab-scm-filter-aged-refs</module>
   </modules>
 
   <scm child.scm.connection.inherit.append.path="false" child.scm.developerConnection.inherit.append.path="false" child.scm.url.inherit.append.path="false">
