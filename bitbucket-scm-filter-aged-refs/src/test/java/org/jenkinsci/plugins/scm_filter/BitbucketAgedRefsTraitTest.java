@@ -1,41 +1,30 @@
 package org.jenkinsci.plugins.scm_filter;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource;
+import java.io.IOException;
+import java.io.InputStream;
 import jenkins.model.Jenkins;
-import jenkins.scm.api.SCMSource;
-import org.hamcrest.Matchers;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
-public class BitbucketAgedRefsTraitTest {
+@WithJenkins
+class BitbucketAgedRefsTraitTest {
 
-    @ClassRule
-    public static JenkinsRule j = new JenkinsRule();
-
-    @Rule
-    public TestName currentTestName = new TestName();
-
-    private SCMSource load() {
-        return load(currentTestName.getMethodName());
-    }
-
-    private SCMSource load(String dataSet) {
-        return (BitbucketSCMSource)
-                Jenkins.XSTREAM2.fromXML(getClass().getResource(getClass().getSimpleName() + "/" + dataSet + ".xml"));
+    private BitbucketSCMSource load(String file) throws IOException {
+        try (InputStream res = getClass().getResourceAsStream(getClass().getSimpleName() + "/" + file)) {
+            return (BitbucketSCMSource) Jenkins.XSTREAM2.fromXML(res);
+        }
     }
 
     @Test
-    public void exclude_thirty_days() {
-        BitbucketSCMSource instance = (BitbucketSCMSource) load();
-        assertThat(
-                instance.getTraits(),
-                contains(Matchers.allOf(
-                        instanceOf(BitbucketAgedRefsTrait.class), hasProperty("retentionDays", is(30)))));
+    void restoreData(JenkinsRule ignoredRule) throws IOException {
+        BitbucketSCMSource instance = load("exclude_thirty_days.xml");
+        assertThat(instance.getTraits())
+                .singleElement()
+                .isInstanceOf(BitbucketAgedRefsTrait.class)
+                .hasFieldOrPropertyWithValue("retentionDays", 30);
     }
 }

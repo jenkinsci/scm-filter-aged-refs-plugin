@@ -1,40 +1,27 @@
 package org.jenkinsci.plugins.scm_filter;
 
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 
+import java.io.IOException;
+import java.io.InputStream;
 import jenkins.model.Jenkins;
-import jenkins.scm.api.SCMSource;
-import org.hamcrest.Matchers;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
-import org.jvnet.hudson.test.JenkinsRule;
+import org.junit.jupiter.api.Test;
 
-public class GitHubAgedRefsTraitTest {
+class GitHubAgedRefsTraitTest {
 
-    @ClassRule
-    public static JenkinsRule j = new JenkinsRule();
-
-    @Rule
-    public TestName currentTestName = new TestName();
-
-    private SCMSource load() {
-        return load(currentTestName.getMethodName());
-    }
-
-    private SCMSource load(String dataSet) {
-        return (GitHubSCMSource)
-                Jenkins.XSTREAM2.fromXML(getClass().getResource(getClass().getSimpleName() + "/" + dataSet + ".xml"));
+    private GitHubSCMSource load(String file) throws IOException {
+        try (InputStream res = getClass().getResourceAsStream(getClass().getSimpleName() + "/" + file)) {
+            return (GitHubSCMSource) Jenkins.XSTREAM2.fromXML(res);
+        }
     }
 
     @Test
-    public void exclude_thirty_days() {
-        GitHubSCMSource instance = (GitHubSCMSource) load();
-        assertThat(
-                instance.getTraits(),
-                contains(Matchers.allOf(instanceOf(GitHubAgedRefsTrait.class), hasProperty("retentionDays", is(30)))));
+    void restoreData() throws IOException {
+        GitHubSCMSource instance = load("exclude_thirty_days.xml");
+        assertThat(instance.getTraits())
+                .singleElement()
+                .isInstanceOf(GitHubAgedRefsTrait.class)
+                .hasFieldOrPropertyWithValue("retentionDays", 30);
     }
 }
