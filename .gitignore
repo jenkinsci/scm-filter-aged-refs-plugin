@@ -5,5 +5,5 @@ work
 .project
 .settings
 bin
-
 *.iml
+.vscode/

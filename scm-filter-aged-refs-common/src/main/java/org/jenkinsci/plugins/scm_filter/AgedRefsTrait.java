@@ -75,7 +75,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
             FormValidation formValidation = FormValidation.ok();
 
             try {
-                if (branchRetentionDays == null || value.branchRetentionDays()) {
+                if (branchRetentionDays == null || branchRetentionDays.isBlank()) {
                     formValidation = FormValidation.error("Branch retention days are not a number");
                 } else {
                     int val = Integer.parseInt(branchRetentionDays);
@@ -88,7 +88,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
             }
 
             try {
-                if (prRetentionDays == null || value.prRetentionDays()) {
+                if (prRetentionDays == null || branchRetentionDays.isBlank()) {
                     formValidation = FormValidation.error("PR retention days are not a number");
                 } else {
                     int val = Integer.parseInt(prRetentionDays);
@@ -101,7 +101,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
             }
 
             try {
-                if (tagRetentionDays == null || value.tagRetentionDays()) {
+                if (tagRetentionDays == null || tagRetentionDays.isBlank()) {
                     formValidation = FormValidation.error("Tag retention days are not a number");
                 } else {
                     int val = Integer.parseInt(tagRetentionDays);
