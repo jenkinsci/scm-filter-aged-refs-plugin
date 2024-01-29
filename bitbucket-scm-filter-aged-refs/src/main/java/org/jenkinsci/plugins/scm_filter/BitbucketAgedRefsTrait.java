@@ -31,15 +31,15 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
      *                            ignore. For example: release main hotfix-*
      */
     @DataBoundConstructor
-    public BitbucketAgedRefsTrait(String branchRetentionDays, String prRetentionDays, String tagRetentionDays,
-            String branchExcludeFilter) {
+    public BitbucketAgedRefsTrait(
+            String branchRetentionDays, String prRetentionDays, String tagRetentionDays, String branchExcludeFilter) {
         super(branchRetentionDays, prRetentionDays, tagRetentionDays, branchExcludeFilter);
     }
 
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
-        context.withFilter(new ExcludeOldBranchesSCMHeadFilter(branchRetentionDays, prRetentionDays, tagRetentionDays,
-                branchExcludeFilter));
+        context.withFilter(new ExcludeOldBranchesSCMHeadFilter(
+                branchRetentionDays, prRetentionDays, tagRetentionDays, branchExcludeFilter));
     }
 
     /**
@@ -68,8 +68,8 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
      */
     private static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
 
-        ExcludeOldBranchesSCMHeadFilter(int branchRetentionDays, int prRetentionDays, int tagRetentionDays,
-                String branchExcludeFilter) {
+        ExcludeOldBranchesSCMHeadFilter(
+                int branchRetentionDays, int prRetentionDays, int tagRetentionDays, String branchExcludeFilter) {
             super(branchRetentionDays, prRetentionDays, tagRetentionDays, branchExcludeFilter);
         }
 

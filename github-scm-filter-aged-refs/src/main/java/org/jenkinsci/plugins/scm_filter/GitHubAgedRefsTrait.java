@@ -31,15 +31,15 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
      *                            ignore. For example: release main hotfix-*
      */
     @DataBoundConstructor
-    public GitHubAgedRefsTrait(String branchRetentionDays, String prRetentionDays, String tagRetentionDays,
-            String branchExcludeFilter) {
+    public GitHubAgedRefsTrait(
+            String branchRetentionDays, String prRetentionDays, String tagRetentionDays, String branchExcludeFilter) {
         super(branchRetentionDays, prRetentionDays, tagRetentionDays, branchExcludeFilter);
     }
 
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
-        context.withFilter(new ExcludeOldBranchesSCMHeadFilter(branchRetentionDays, prRetentionDays, tagRetentionDays,
-                branchExcludeFilter));
+        context.withFilter(new ExcludeOldBranchesSCMHeadFilter(
+                branchRetentionDays, prRetentionDays, tagRetentionDays, branchExcludeFilter));
     }
 
     /**
@@ -68,8 +68,8 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
      */
     private static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
 
-        ExcludeOldBranchesSCMHeadFilter(int branchRetentionDays, int prRetentionDays, int tagRetentionDays,
-                String branchExcludeFilter) {
+        ExcludeOldBranchesSCMHeadFilter(
+                int branchRetentionDays, int prRetentionDays, int tagRetentionDays, String branchExcludeFilter) {
             super(branchRetentionDays, prRetentionDays, tagRetentionDays, branchExcludeFilter);
         }
 
@@ -84,7 +84,10 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                 Iterable<GHBranch> branches = ((GitHubSCMSourceRequest) scmSourceRequest).getBranches();
                 for (GHBranch branch : branches) {
                     if (branch.getName().equals(scmHead.getName())) {
-                        long branchTS = branch.getOwner().getCommit(branch.getSHA1()).getCommitDate().getTime();
+                        long branchTS = branch.getOwner()
+                                .getCommit(branch.getSHA1())
+                                .getCommitDate()
+                                .getTime();
                         return branchTS < super.getAcceptableBranchDateTimeThreshold();
                     }
                 }
@@ -92,7 +95,11 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                 Iterable<GHPullRequest> pulls = ((GitHubSCMSourceRequest) scmSourceRequest).getPullRequests();
                 for (GHPullRequest pull : pulls) {
                     if (("PR-" + pull.getNumber()).equals(scmHead.getName())) {
-                        long pullTS = pull.getHead().getCommit().getCommitShortInfo().getCommitDate().getTime();
+                        long pullTS = pull.getHead()
+                                .getCommit()
+                                .getCommitShortInfo()
+                                .getCommitDate()
+                                .getTime();
                         return pullTS < super.getAcceptablePRDateTimeThreshold();
                     }
                 }

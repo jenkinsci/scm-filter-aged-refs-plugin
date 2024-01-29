@@ -30,8 +30,8 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
      * @param branchExcludeFilter space-separated list of branch name patterns to
      *                            ignore. For example: release main hotfix-*
      */
-    protected AgedRefsTrait(String branchRetentionDays, String prRetentionDays, String tagRetentionDays,
-            String branchExcludeFilter) {
+    protected AgedRefsTrait(
+            String branchRetentionDays, String prRetentionDays, String tagRetentionDays, String branchExcludeFilter) {
         this.branchRetentionDays = Integer.parseInt(branchRetentionDays);
         this.prRetentionDays = Integer.parseInt(prRetentionDays);
         this.tagRetentionDays = Integer.parseInt(tagRetentionDays);
@@ -73,8 +73,10 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
         }
 
         @Restricted(NoExternalUse.class)
-        public FormValidation doCheckRetentionDays(@QueryParameter String branchRetentionDays,
-                @QueryParameter String prRetentionDays, @QueryParameter String tagRetentionDays) {
+        public FormValidation doCheckRetentionDays(
+                @QueryParameter String branchRetentionDays,
+                @QueryParameter String prRetentionDays,
+                @QueryParameter String tagRetentionDays) {
             FormValidation formValidation = FormValidation.ok();
 
             try {
@@ -160,8 +162,8 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
             return quotedBranches.toString();
         }
 
-        protected ExcludeBranchesSCMHeadFilter(int branchRetentionDays, int prRetentionDays, int tagRetentionDays,
-                String branchExcludeFilter) {
+        protected ExcludeBranchesSCMHeadFilter(
+                int branchRetentionDays, int prRetentionDays, int tagRetentionDays, String branchExcludeFilter) {
             this.branchExcludePattern = this.getPattern(branchExcludeFilter);
 
             long now = System.currentTimeMillis();
