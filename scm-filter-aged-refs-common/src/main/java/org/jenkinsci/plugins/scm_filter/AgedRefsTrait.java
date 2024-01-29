@@ -19,17 +19,19 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
     final int branchRetentionDays;
     final int prRetentionDays;
     final int tagRetentionDays;
-    final String branchExcludeFilter; 
+    final String branchExcludeFilter;
 
     /**
      * Constructor for stapler.
      *
      * @param branchRetentionDays retention period in days for branches
-     * @param prRetentionDays retention period in days for pull requests
-     * @param tagRetentionDays retention period in days for tags
-     * @param branchExcludeFilter space-separated list of branch name patterns to ignore. For example: release main hotfix-*
+     * @param prRetentionDays     retention period in days for pull requests
+     * @param tagRetentionDays    retention period in days for tags
+     * @param branchExcludeFilter space-separated list of branch name patterns to
+     *                            ignore. For example: release main hotfix-*
      */
-    protected AgedRefsTrait(String branchRetentionDays, String prRetentionDays, String tagRetentionDays, String branchExcludeFilter) {
+    protected AgedRefsTrait(String branchRetentionDays, String prRetentionDays, String tagRetentionDays,
+            String branchExcludeFilter) {
         this.branchRetentionDays = Integer.parseInt(branchRetentionDays);
         this.prRetentionDays = Integer.parseInt(prRetentionDays);
         this.tagRetentionDays = Integer.parseInt(tagRetentionDays);
@@ -71,7 +73,8 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
         }
 
         @Restricted(NoExternalUse.class)
-        public FormValidation doCheckRetentionDays(@QueryParameter String branchRetentionDays, @QueryParameter String prRetentionDays, @QueryParameter String tagRetentionDays) {
+        public FormValidation doCheckRetentionDays(@QueryParameter String branchRetentionDays,
+                @QueryParameter String prRetentionDays, @QueryParameter String tagRetentionDays) {
             FormValidation formValidation = FormValidation.ok();
 
             try {
@@ -118,7 +121,8 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
     }
 
     /**
-     * Filter that excludes references (branches, pull requests, tags) according to their last commit modification date and the defined branchRetentionDays.
+     * Filter that excludes references (branches, pull requests, tags) according to
+     * their last commit modification date and the defined branchRetentionDays.
      */
     public abstract static class ExcludeBranchesSCMHeadFilter extends SCMHeadFilter {
 
@@ -156,7 +160,8 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
             return quotedBranches.toString();
         }
 
-        protected ExcludeBranchesSCMHeadFilter(int branchRetentionDays, int prRetentionDays, int tagRetentionDays, String branchExcludeFilter) {
+        protected ExcludeBranchesSCMHeadFilter(int branchRetentionDays, int prRetentionDays, int tagRetentionDays,
+                String branchExcludeFilter) {
             this.branchExcludePattern = this.getPattern(branchExcludeFilter);
 
             long now = System.currentTimeMillis();
@@ -167,7 +172,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
                 this.acceptableBranchDateTimeThreshold = 0;
             }
 
-            if (prRetentionDays > 0 ) {
+            if (prRetentionDays > 0) {
                 this.acceptablePRDateTimeThreshold = now - (24L * 60 * 60 * 1000 * prRetentionDays);
             } else {
                 this.acceptablePRDateTimeThreshold = 0;
@@ -197,6 +202,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
         }
 
         @Override
-        public abstract boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead) throws IOException, InterruptedException;
+        public abstract boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
+                throws IOException, InterruptedException;
     }
 }
