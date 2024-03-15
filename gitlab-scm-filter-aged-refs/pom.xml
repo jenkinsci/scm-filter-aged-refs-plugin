@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.jenkins-ci.plugins</groupId>
+    <artifactId>scm-filter-aged-refs-parent</artifactId>
+    <version>${changelist}</version>
+  </parent>
+
+  <artifactId>gitlab-scm-filter-aged-refs</artifactId>
+  <packaging>hpi</packaging>
+
+  <name>GitLab Aged References SCM Filter Plugin</name>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.jenkins.plugins</groupId>
+      <artifactId>gitlab-branch-source</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.jenkins-ci.plugins</groupId>
+      <artifactId>scm-filter-aged-refs-common</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+</project>
