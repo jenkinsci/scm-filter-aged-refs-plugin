@@ -13,7 +13,7 @@
   <packaging>pom</packaging>
 
   <name>Aged References SCM Filter</name>
-  <description>Reactor adding an aged filtering strategy to several SCM implementations.</description>
+  <description>Adds an aged filtering strategy to several SCM implementations.</description>
   <url>https://plugins.jenkins.io/github-scm-filter-aged-refs/</url>
 
   <licenses>
