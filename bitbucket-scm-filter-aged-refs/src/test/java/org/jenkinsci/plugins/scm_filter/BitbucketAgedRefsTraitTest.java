@@ -1,58 +1,45 @@
 package org.jenkinsci.plugins.scm_filter;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource;
+import java.io.IOException;
+import java.io.InputStream;
 import jenkins.model.Jenkins;
-import jenkins.scm.api.SCMSource;
-import org.hamcrest.Matchers;
-import org.junit.ClassRule;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TestName;
+import org.junit.jupiter.api.Test;
 import org.jvnet.hudson.test.JenkinsRule;
+import org.jvnet.hudson.test.junit.jupiter.WithJenkins;
 
-public class BitbucketAgedRefsTraitTest {
+@WithJenkins
+class BitbucketAgedRefsTraitTest {
 
-    @ClassRule
-    public static final JenkinsRule j = new JenkinsRule();
-
-    @Rule
-    public TestName currentTestName = new TestName();
-
-    private SCMSource load() {
-        return load(currentTestName.getMethodName());
-    }
-
-    private SCMSource load(String dataSet) {
-        return (BitbucketSCMSource)
-                Jenkins.XSTREAM2.fromXML(getClass().getResource(getClass().getSimpleName() + "/" + dataSet + ".xml"));
+    private BitbucketSCMSource load(String file) throws IOException {
+        try (InputStream res = getClass().getResourceAsStream(getClass().getSimpleName() + "/" + file)) {
+            return (BitbucketSCMSource) Jenkins.XSTREAM2.fromXML(res);
+        }
     }
 
     @Test
-    public void plugin_defaults() {
-        BitbucketSCMSource instance = (BitbucketSCMSource) load();
-        assertThat(
-                instance.getTraits(),
-                contains(Matchers.allOf(
-                        instanceOf(BitbucketAgedRefsTrait.class),
-                        hasProperty("branchRetentionDays", is(0)),
-                        hasProperty("prRetentionDays", is(0)),
-                        hasProperty("tagRetentionDays", is(0)),
-                        hasProperty("branchExcludeFilter", is("")))));
+    void restoreDefaultData(JenkinsRule ignoredRule) throws IOException {
+        BitbucketSCMSource instance = load("plugin_defaults.xml");
+        assertThat(instance.getTraits())
+                .singleElement()
+                .isInstanceOf(BitbucketAgedRefsTrait.class)
+                .hasFieldOrPropertyWithValue("branchRetentionDays", 0)
+                .hasFieldOrPropertyWithValue("prRetentionDays", 0)
+                .hasFieldOrPropertyWithValue("tagRetentionDays", 0)
+                .hasFieldOrPropertyWithValue("branchExcludeFilter", "");
     }
 
     @Test
-    public void plugin_enabled() {
-        BitbucketSCMSource instance = (BitbucketSCMSource) load();
-        assertThat(
-                instance.getTraits(),
-                contains(Matchers.allOf(
-                        instanceOf(BitbucketAgedRefsTrait.class),
-                        hasProperty("branchRetentionDays", is(30)),
-                        hasProperty("prRetentionDays", is(40)),
-                        hasProperty("tagRetentionDays", is(50)),
-                        hasProperty("branchExcludeFilter", is("main hotfix-*")))));
+    void restoreExistingData(JenkinsRule ignoredRule) throws IOException {
+        BitbucketSCMSource instance = load("plugin_enabled.xml");
+        assertThat(instance.getTraits())
+                .singleElement()
+                .isInstanceOf(BitbucketAgedRefsTrait.class)
+                .hasFieldOrPropertyWithValue("branchRetentionDays", 30)
+                .hasFieldOrPropertyWithValue("prRetentionDays", 40)
+                .hasFieldOrPropertyWithValue("tagRetentionDays", 50)
+                .hasFieldOrPropertyWithValue("branchExcludeFilter", "main hotfix-*");
     }
 }
