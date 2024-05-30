@@ -16,10 +16,10 @@ import org.kohsuke.stapler.QueryParameter;
 
 public abstract class AgedRefsTrait extends SCMSourceTrait {
 
-    final int branchRetentionDays;
-    final int prRetentionDays;
-    final int tagRetentionDays;
-    final String branchExcludeFilter;
+    int branchRetentionDays;
+    int prRetentionDays;
+    int tagRetentionDays;
+    String branchExcludeFilter;
 
     /**
      * Constructor for stapler.

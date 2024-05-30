@@ -36,6 +36,17 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
         super(branchRetentionDays, prRetentionDays, tagRetentionDays, branchExcludeFilter);
     }
 
+    protected transient String retentionDays;
+
+    protected Object readResolve() {
+        if (retentionDays != null || !retentionDays.isEmpty()) {
+            super.branchRetentionDays = Integer.parseInt(retentionDays);
+            super.prRetentionDays = Integer.parseInt(retentionDays);
+            super.tagRetentionDays = Integer.parseInt(retentionDays);
+        }
+        return this;
+    }
+
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
         context.withFilter(new ExcludeOldBranchesSCMHeadFilter(
