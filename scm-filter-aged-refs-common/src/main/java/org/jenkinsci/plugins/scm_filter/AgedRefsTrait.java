@@ -12,6 +12,7 @@ import jenkins.scm.api.trait.SCMSourceTraitDescriptor;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.verb.POST;
 
 public abstract class AgedRefsTrait extends SCMSourceTrait {
 
@@ -46,6 +47,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
         }
 
         @Restricted(NoExternalUse.class)
+        @POST
         public FormValidation doCheckRetentionDays(@QueryParameter String value) {
             FormValidation formValidation = FormValidation.ok();
 
