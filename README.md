@@ -1,11 +1,16 @@
 # Branch source Aged Refs
 
+[![GitHub release](https://img.shields.io/github/v/release/jenkinsci/scm-filter-aged-refs-plugin)](https://github.com/jenkinsci/scm-filter-aged-refs-plugin/releases/latest)
+[![Build Status](https://ci.jenkins.io/buildStatus/icon?job=Plugins%2Fscm-filter-aged-refs-plugin%2Fmain)](https://ci.jenkins.io/job/Plugins/job/scm-filter-aged-refs-plugin/job/main/)
+[![GitHub license](https://img.shields.io/github/license/jenkinsci/scm-filter-aged-refs-plugin)](https://github.com/jenkinsci/scm-filter-aged-refs-plugin/blob/main/LICENSE)
+[![Maintenance](https://img.shields.io/maintenance/yes/2024)]()
+
 This is a collection of extensions for several branch source Jenkins plugins.
 
 It provides filters for
 
-- [Bitbucket]: Filtering references (branches, tags and pull requests)
-- [GitHub]: Filtering references (branches, tags and pull requests)
+- [Bitbucket]: ![BitBucket Plugin installs](https://img.shields.io/jenkins/plugin/i/bitbucket-scm-filter-aged-refs?color=blue) Filtering references (branches, tags and pull requests)
+- [GitHub]: ![GitHub Plugin installs](https://img.shields.io/jenkins/plugin/i/github-scm-filter-aged-refs?color=blue) Filtering references (branches, tags and pull requests)
 
 This filter will ignore references (branches and pull requests) where its last
 commit creation date is older than the defined threshold (in days). Ignored
@@ -20,13 +25,13 @@ deletion on the next full repository scan.
 When defining a new job (or Organization folder), include an additional
 behaviour (placed under the additional separator). 
 
-![](.github/images/dropdown.png)
+![Dropdown Screenshot](.github/images/dropdown.png)
 
 This behaviour is configurable, being mandatory to specify the
 acceptable threshold (positive days) for each reference:
 
-![](.github/images/config.png)
+![Config Screenshot](.github/images/config.png)
 
 In case of an invalid positive threshold, the form won't validate:
 
-![](.github/images/config-invalid.png)
+![Error Screenshot](.github/images/config-invalid.png)
