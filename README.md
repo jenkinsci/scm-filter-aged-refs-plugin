@@ -12,7 +12,7 @@ It provides filters for
 - [Bitbucket]: ![BitBucket Plugin installs](https://img.shields.io/jenkins/plugin/i/bitbucket-scm-filter-aged-refs?color=blue) Filtering references (branches, tags and pull requests)
 - [GitHub]: ![GitHub Plugin installs](https://img.shields.io/jenkins/plugin/i/github-scm-filter-aged-refs?color=blue) Filtering references (branches, tags and pull requests)
 
-This filter will ignore references (branches and pull requests) where its last
+This filter will ignore references (branches, pull requests and/or tags) where its last
 commit creation date is older than the defined threshold (in days). Ignored
 references won't be added as sources or will be disabled and tagged for
 deletion on the next full repository scan.
@@ -28,7 +28,8 @@ behaviour (placed under the additional separator). 
 ![Dropdown Screenshot](.github/images/dropdown.png)
 
 This behaviour is configurable, being mandatory to specify the
-acceptable threshold (positive days) for each reference:
+acceptable threshold (positive days) for each reference.
+It can be configured to exclude a reference type from this filter, for example, excluding the branches so the acceptable threshold is only applied to pull requests and tags.
 
 ![Config Screenshot](.github/images/config.png)
 
