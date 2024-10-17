@@ -28,16 +28,21 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
      * Constructor for stapler.
      *
      * @param retentionDays retention period in days
+     * @param filterBranches if filter should be applied to branches
+     * @param filterPullRequests if filter should be applied to pull requests
+     * @param filterTags if filter should be applied to tags
      */
     @DataBoundConstructor
-    public GitHubAgedRefsTrait(String retentionDays) {
-        super(retentionDays);
+    public GitHubAgedRefsTrait(
+            String retentionDays, String filterBranches, String filterPullRequests, String filterTags) {
+        super(retentionDays, filterBranches, filterPullRequests, filterTags);
     }
 
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
         if (retentionDays > 0) {
-            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(retentionDays));
+            context.withFilter(
+                    new ExcludeOldBranchesSCMHeadFilter(retentionDays, filterBranches, filterPullRequests, filterTags));
         }
     }
 
@@ -62,18 +67,19 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
     }
 
     /**
-     * Filter that excludes references (branches, pull requests, tags) according to their last commit modification date and the defined retentionDays.
+     * Filter that excludes references (branches, pull requests and/or tags) according to their last commit modification date and the defined retentionDays.
      */
     private static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
 
-        ExcludeOldBranchesSCMHeadFilter(int retentionDays) {
-            super(retentionDays);
+        ExcludeOldBranchesSCMHeadFilter(
+                int retentionDays, boolean filterBranches, boolean filterPullRequests, boolean filterTags) {
+            super(retentionDays, filterBranches, filterPullRequests, filterTags);
         }
 
         @Override
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
                 throws IOException, InterruptedException {
-            if (scmHead instanceof BranchSCMHead) {
+            if (super.shouldFilterBranches() && scmHead instanceof BranchSCMHead) {
                 Iterable<GHBranch> branches = ((GitHubSCMSourceRequest) scmSourceRequest).getBranches();
                 for (GHBranch branch : branches) {
                     long branchTS = branch.getOwner()
@@ -84,7 +90,7 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                         return branchTS < super.getAcceptableDateTimeThreshold();
                     }
                 }
-            } else if (scmHead instanceof PullRequestSCMHead) {
+            } else if (super.shouldFilterPullRequest() && scmHead instanceof PullRequestSCMHead) {
                 Iterable<GHPullRequest> pulls = ((GitHubSCMSourceRequest) scmSourceRequest).getPullRequests();
                 for (GHPullRequest pull : pulls) {
                     if (("PR-" + pull.getNumber()).equals(scmHead.getName())) {
@@ -96,7 +102,7 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                         return pullTS < super.getAcceptableDateTimeThreshold();
                     }
                 }
-            } else if (scmHead instanceof GitHubTagSCMHead) {
+            } else if (super.shouldFilterTags() && scmHead instanceof GitHubTagSCMHead) {
                 long tagTS = ((GitHubTagSCMHead) scmHead).getTimestamp();
                 return tagTS < super.getAcceptableDateTimeThreshold();
             }

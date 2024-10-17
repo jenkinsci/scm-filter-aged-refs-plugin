@@ -28,16 +28,21 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
      * Constructor for stapler.
      *
      * @param retentionDays retention period in days
+     * @param filterBranches if filter should be applied to branches
+     * @param filterPullRequests if filter should be applied to pull requests
+     * @param filterTags if filter should be applied to tags
      */
     @DataBoundConstructor
-    public BitbucketAgedRefsTrait(String retentionDays) {
-        super(retentionDays);
+    public BitbucketAgedRefsTrait(
+            String retentionDays, String filterBranches, String filterPullRequests, String filterTags) {
+        super(retentionDays, filterBranches, filterPullRequests, filterTags);
     }
 
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
         if (retentionDays > 0) {
-            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(retentionDays));
+            context.withFilter(
+                    new ExcludeOldBranchesSCMHeadFilter(retentionDays, filterBranches, filterPullRequests, filterTags));
         }
     }
 
@@ -62,18 +67,19 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
     }
 
     /**
-     * Filter that excludes references (branches, pull requests, tags) according to their last commit modification date and the defined retentionDays.
+     * Filter that excludes references (branches, pull requests and/or tags) according to their last commit modification date and the defined retentionDays.
      */
     private static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
 
-        ExcludeOldBranchesSCMHeadFilter(int retentionDays) {
-            super(retentionDays);
+        ExcludeOldBranchesSCMHeadFilter(
+                int retentionDays, boolean filterBranches, boolean filterPullRequests, boolean filterTags) {
+            super(retentionDays, filterBranches, filterPullRequests, filterTags);
         }
 
         @Override
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
                 throws IOException, InterruptedException {
-            if (scmHead instanceof BranchSCMHead) {
+            if (super.shouldFilterBranches() && scmHead instanceof BranchSCMHead) {
                 Iterable<BitbucketBranch> branches = ((BitbucketSCMSourceRequest) scmSourceRequest).getBranches();
                 for (BitbucketBranch branch : branches) {
                     long branchTS = branch.getDateMillis();
@@ -81,7 +87,7 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
                         return branchTS < super.getAcceptableDateTimeThreshold();
                     }
                 }
-            } else if (scmHead instanceof PullRequestSCMHead) {
+            } else if (super.shouldFilterPullRequest() && scmHead instanceof PullRequestSCMHead) {
                 Iterable<BitbucketPullRequest> pulls = ((BitbucketSCMSourceRequest) scmSourceRequest).getPullRequests();
                 for (BitbucketPullRequest pull : pulls) {
                     if (pull.getSource().getBranch().getName().equals(scmHead.getName())) {
@@ -89,7 +95,7 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
                         return pullTS < super.getAcceptableDateTimeThreshold();
                     }
                 }
-            } else if (scmHead instanceof BitbucketTagSCMHead) {
+            } else if (super.shouldFilterTags() && scmHead instanceof BitbucketTagSCMHead) {
                 long tagTS = ((BitbucketTagSCMHead) scmHead).getTimestamp();
                 return tagTS < super.getAcceptableDateTimeThreshold();
             }

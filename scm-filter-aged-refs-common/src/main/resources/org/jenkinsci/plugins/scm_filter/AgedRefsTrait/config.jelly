@@ -4,4 +4,13 @@
     <f:entry title="Days to accept unmodified refs" field="retentionDays">
         <f:number clazz="positive-number" min="1" step="1" default="1"/>
     </f:entry>
+    <f:entry field="filterBranches">
+        <f:toggleSwitch title="Apply filter to branches" id="filter-branches" default="true"/>
+    </f:entry>
+    <f:entry field="filterPullRequests">
+        <f:toggleSwitch title="Apply filter to pull requests" id="filter-pull-requests" default="true" />
+    </f:entry>
+    <f:entry field="filterTags">
+        <f:toggleSwitch title="Apply filter to tags" id="filter-tags" default="true" />
+    </f:entry>
 </j:jelly>

@@ -4,32 +4,51 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.util.FormValidation;
 import java.io.IOException;
 import jenkins.scm.api.SCMHead;
-import jenkins.scm.api.trait.SCMHeadFilter;
-import jenkins.scm.api.trait.SCMSourceContext;
-import jenkins.scm.api.trait.SCMSourceRequest;
-import jenkins.scm.api.trait.SCMSourceTrait;
-import jenkins.scm.api.trait.SCMSourceTraitDescriptor;
+import jenkins.scm.api.trait.*;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.verb.POST;
 
 public abstract class AgedRefsTrait extends SCMSourceTrait {
-
     final int retentionDays;
+    final boolean filterBranches;
+    final boolean filterPullRequests;
+    final boolean filterTags;
 
     /**
      * Constructor for stapler.
      *
      * @param retentionDays retention period in days
+     * @param filterBranches if filter should be applied to branches
+     * @param filterPullRequests if filter should be applied to pull requests
+     * @param filterTags if filter should be applied to tags
      */
-    protected AgedRefsTrait(String retentionDays) {
+    protected AgedRefsTrait(String retentionDays, String filterBranches, String filterPullRequests, String filterTags) {
         this.retentionDays = Integer.parseInt(retentionDays);
+        this.filterBranches = Boolean.parseBoolean(filterBranches);
+        this.filterPullRequests = Boolean.parseBoolean(filterPullRequests);
+        this.filterTags = Boolean.parseBoolean(filterTags);
     }
 
     @SuppressWarnings("unused") // used by Jelly EL
     public int getRetentionDays() {
         return this.retentionDays;
+    }
+
+    @SuppressWarnings("unused") // used by Jelly EL
+    public boolean getFilterBranches() {
+        return this.filterBranches;
+    }
+
+    @SuppressWarnings("unused") // used by Jelly EL
+    public boolean getFilterPullRequests() {
+        return this.filterPullRequests;
+    }
+
+    @SuppressWarnings("unused") // used by Jelly EL
+    public boolean getFilterTags() {
+        return this.filterTags;
     }
 
     @Override
@@ -74,14 +93,33 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
     public abstract static class ExcludeBranchesSCMHeadFilter extends SCMHeadFilter {
 
         private final long acceptableDateTimeThreshold;
+        private final boolean filterBranches;
+        private final boolean filterPullRequests;
+        private final boolean filterTags;
 
-        protected ExcludeBranchesSCMHeadFilter(int retentionDays) {
+        protected ExcludeBranchesSCMHeadFilter(
+                int retentionDays, boolean filterBranches, boolean filterPullRequests, boolean filterTags) {
             long now = System.currentTimeMillis();
             acceptableDateTimeThreshold = now - (24L * 60 * 60 * 1000 * retentionDays);
+            this.filterBranches = filterBranches;
+            this.filterPullRequests = filterPullRequests;
+            this.filterTags = filterTags;
         }
 
         public long getAcceptableDateTimeThreshold() {
             return acceptableDateTimeThreshold;
+        }
+
+        public boolean shouldFilterBranches() {
+            return filterBranches;
+        }
+
+        public boolean shouldFilterPullRequest() {
+            return filterPullRequests;
+        }
+
+        public boolean shouldFilterTags() {
+            return filterTags;
         }
 
         @Override
