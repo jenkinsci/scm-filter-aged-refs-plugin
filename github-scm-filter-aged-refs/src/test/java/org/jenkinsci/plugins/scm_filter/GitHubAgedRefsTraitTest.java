@@ -7,7 +7,6 @@ import java.io.InputStream;
 import jenkins.model.Jenkins;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
 import org.junit.jupiter.api.Test;
-import org.jvnet.hudson.test.JenkinsRule;
 
 class GitHubAgedRefsTraitTest {
 
