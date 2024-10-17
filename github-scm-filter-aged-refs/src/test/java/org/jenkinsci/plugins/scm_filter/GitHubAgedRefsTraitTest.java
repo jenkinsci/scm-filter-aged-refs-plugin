@@ -7,6 +7,7 @@ import java.io.InputStream;
 import jenkins.model.Jenkins;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
 import org.junit.jupiter.api.Test;
+import org.jvnet.hudson.test.JenkinsRule;
 
 class GitHubAgedRefsTraitTest {
 
@@ -23,5 +24,15 @@ class GitHubAgedRefsTraitTest {
                 .singleElement()
                 .isInstanceOf(GitHubAgedRefsTrait.class)
                 .hasFieldOrPropertyWithValue("retentionDays", 30);
+    }
+
+    @Test
+    void checkFilterTagsSetting() throws IOException {
+        GitHubSCMSource instance = load("exclude_ten_days_only_tags.xml");
+        assertThat(instance.getTraits())
+                .singleElement()
+                .isInstanceOf(GitHubAgedRefsTrait.class)
+                .hasFieldOrPropertyWithValue("retentionDays", 10)
+                .hasFieldOrPropertyWithValue("filterTags", false);
     }
 }

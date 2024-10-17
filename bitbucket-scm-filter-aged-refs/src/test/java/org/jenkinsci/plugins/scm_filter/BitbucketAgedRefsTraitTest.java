@@ -27,4 +27,14 @@ class BitbucketAgedRefsTraitTest {
                 .isInstanceOf(BitbucketAgedRefsTrait.class)
                 .hasFieldOrPropertyWithValue("retentionDays", 30);
     }
+
+    @Test
+    void checkFilterTagsSetting(JenkinsRule ignoredRule) throws IOException {
+        BitbucketSCMSource instance = load("exclude_ten_days_only_tags.xml");
+        assertThat(instance.getTraits())
+                .singleElement()
+                .isInstanceOf(BitbucketAgedRefsTrait.class)
+                .hasFieldOrPropertyWithValue("retentionDays", 10)
+                .hasFieldOrPropertyWithValue("filterTags", false);
+    }
 }
