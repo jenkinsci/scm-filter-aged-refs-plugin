@@ -101,7 +101,7 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                     if (iterator.hasNext()) {
                         long pullTS = iterator.next()
                                 .getCommit()
-                                .getAuthor()
+                                .getCommitter()
                                 .getDate()
                                 .getTime();
                         return pullTS < super.getAcceptableDateTimeThreshold();
