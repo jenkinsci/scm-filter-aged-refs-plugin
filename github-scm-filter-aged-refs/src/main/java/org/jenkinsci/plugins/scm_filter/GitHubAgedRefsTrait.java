@@ -96,16 +96,18 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                         .findAny();
                 if (pull.isPresent()) {
                     PagedIterator<GHPullRequestCommitDetail> iterator =
-                            pull.get().listCommits().withPageSize(1).iterator();
-                    // Has at least one commit
-                    if (iterator.hasNext()) {
-                        long pullTS = iterator.next()
+                            pull.get().listCommits().iterator();
+                    long latestPullTS = 0;
+                    while (iterator.hasNext()) {
+                        long commitTS = iterator.next()
                                 .getCommit()
-                                .getAuthor()
+                                .getCommitter()
                                 .getDate()
                                 .getTime();
-                        return pullTS < super.getAcceptableDateTimeThreshold();
+                        if (commitTS > latestPullTS) latestPullTS = commitTS;
                     }
+                    // Did we see at least one commit?
+                    if (latestPullTS > 0) return latestPullTS < super.getAcceptableDateTimeThreshold();
                 }
                 return false;
             } else if (scmHead instanceof GitHubTagSCMHead) {
