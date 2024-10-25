@@ -9,6 +9,7 @@ import jenkins.scm.api.trait.SCMSourceContext;
 import jenkins.scm.api.trait.SCMSourceRequest;
 import jenkins.scm.api.trait.SCMSourceTrait;
 import jenkins.scm.api.trait.SCMSourceTraitDescriptor;
+import org.jenkinsci.plugins.scm_filter.utils.FormValidationUtils;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.QueryParameter;
@@ -49,22 +50,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
         @Restricted(NoExternalUse.class)
         @POST
         public FormValidation doCheckRetentionDays(@QueryParameter String value) {
-            FormValidation formValidation = FormValidation.ok();
-
-            try {
-                if (value == null || value.isBlank()) {
-                    formValidation = FormValidation.error("Not a number");
-                } else {
-                    int val = Integer.parseInt(value);
-                    if (val < 1) {
-                        formValidation = FormValidation.error("Not a positive number");
-                    }
-                }
-            } catch (NumberFormatException e) {
-                formValidation = FormValidation.error("Not a number");
-            }
-
-            return formValidation;
+            return FormValidationUtils.checkRetentionDays(value);
         }
     }
 
