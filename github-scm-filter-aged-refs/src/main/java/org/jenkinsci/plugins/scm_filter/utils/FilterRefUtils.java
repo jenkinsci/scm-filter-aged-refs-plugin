@@ -38,12 +38,18 @@ public class FilterRefUtils {
                 .findAny();
         if (pull.isPresent()) {
             PagedIterator<GHPullRequestCommitDetail> iterator =
-                    pull.get().listCommits().withPageSize(1).iterator();
-            // Has at least one commit
-            if (iterator.hasNext()) {
-                long pullTS = iterator.next().getCommit().getAuthor().getDate().getTime();
-                return pullTS < acceptableDateTimeThreshold;
+                    pull.get().listCommits().iterator();
+            long latestPullTS = 0;
+            while (iterator.hasNext()) {
+                long commitTS = iterator.next()
+                        .getCommit()
+                        .getCommitter()
+                        .getDate()
+                        .getTime();
+                if (commitTS > latestPullTS) latestPullTS = commitTS;
             }
+            // Did we see at least one commit?
+            if (latestPullTS > 0) return latestPullTS < acceptableDateTimeThreshold;
         }
         return false;
     }
