@@ -41,11 +41,8 @@ public class FilterRefUtils {
                     pull.get().listCommits().iterator();
             long latestPullTS = 0;
             while (iterator.hasNext()) {
-                long commitTS = iterator.next()
-                        .getCommit()
-                        .getCommitter()
-                        .getDate()
-                        .getTime();
+                long commitTS =
+                        iterator.next().getCommit().getCommitter().getDate().getTime();
                 if (commitTS > latestPullTS) latestPullTS = commitTS;
             }
             // Did we see at least one commit?
