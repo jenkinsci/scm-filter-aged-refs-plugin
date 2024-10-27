@@ -1,0 +1,17 @@
+<com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource>
+    <id>com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMNavigator::https://bitbucket.org::jenkinsci::bitbucket-scm-filter-aged-refs</id>
+    <credentialsId>bitbucket-cloud</credentialsId>
+    <checkoutCredentialsId>SAME</checkoutCredentialsId>
+    <repoOwner>cloudbeers</repoOwner>
+    <repository>stunning-adventure</repository>
+    <includes>*</includes>
+    <excludes></excludes>
+    <autoRegisterHook>false</autoRegisterHook>
+    <sshPort>-1</sshPort>
+    <repositoryType>GIT</repositoryType>
+    <traits>
+        <org.jenkinsci.plugins.scm_filter.BitbucketAgedTagsTrait plugin="bitbucket-scm-filter-aged-refs@${project.version}">
+            <retentionDays>30</retentionDays>
+        </org.jenkinsci.plugins.scm_filter.BitbucketAgedTagsTrait>
+    </traits>
+</com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource>
