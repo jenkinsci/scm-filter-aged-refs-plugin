@@ -8,7 +8,7 @@ import com.cloudbees.jenkins.plugins.bitbucket.api.BitbucketBranch;
 import com.cloudbees.jenkins.plugins.bitbucket.api.BitbucketPullRequest;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
-public final class FilterRefUtils {
+public final class BitbucketFilterRefUtils {
     public static boolean isBranchExcluded(
             @NonNull BitbucketSCMSourceRequest scmSourceRequest,
             @NonNull BranchSCMHead scmHead,

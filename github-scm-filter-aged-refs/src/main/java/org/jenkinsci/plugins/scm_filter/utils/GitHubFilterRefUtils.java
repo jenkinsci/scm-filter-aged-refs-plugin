@@ -12,7 +12,7 @@ import org.kohsuke.github.GHPullRequest;
 import org.kohsuke.github.GHPullRequestCommitDetail;
 import org.kohsuke.github.PagedIterator;
 
-public class FilterRefUtils {
+public class GitHubFilterRefUtils {
     public static boolean isBranchExcluded(
             GitHubSCMSourceRequest scmSourceRequest, BranchSCMHead scmHead, long acceptableDateTimeThreshold)
             throws IOException {

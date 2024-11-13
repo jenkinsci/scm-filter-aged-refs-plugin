@@ -15,7 +15,7 @@ import org.jenkinsci.plugins.github_branch_source.GitHubSCMSourceContext;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSourceRequest;
 import org.jenkinsci.plugins.github_branch_source.GitHubTagSCMHead;
 import org.jenkinsci.plugins.github_branch_source.PullRequestSCMHead;
-import org.jenkinsci.plugins.scm_filter.utils.FilterRefUtils;
+import org.jenkinsci.plugins.scm_filter.utils.GitHubFilterRefUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 /**
@@ -73,17 +73,17 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
                 throws IOException, InterruptedException {
             if (scmHead instanceof BranchSCMHead) {
-                return FilterRefUtils.isBranchExcluded(
+                return GitHubFilterRefUtils.isBranchExcluded(
                         (GitHubSCMSourceRequest) scmSourceRequest,
                         (BranchSCMHead) scmHead,
                         getAcceptableDateTimeThreshold());
             } else if (scmHead instanceof PullRequestSCMHead) {
-                return FilterRefUtils.isPullRequestExcluded(
+                return GitHubFilterRefUtils.isPullRequestExcluded(
                         (GitHubSCMSourceRequest) scmSourceRequest,
                         (PullRequestSCMHead) scmHead,
                         getAcceptableDateTimeThreshold());
             } else if (scmHead instanceof GitHubTagSCMHead) {
-                return FilterRefUtils.isTagExcluded((GitHubTagSCMHead) scmHead, getAcceptableDateTimeThreshold());
+                return GitHubFilterRefUtils.isTagExcluded((GitHubTagSCMHead) scmHead, getAcceptableDateTimeThreshold());
             }
             return false;
         }

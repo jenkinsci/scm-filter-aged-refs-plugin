@@ -11,7 +11,7 @@ import jenkins.scm.impl.trait.Selection;
 import org.jenkinsci.Symbol;
 import org.jenkinsci.plugins.github_branch_source.*;
 import org.jenkinsci.plugins.scm_filter.enums.RefType;
-import org.jenkinsci.plugins.scm_filter.utils.FilterRefUtils;
+import org.jenkinsci.plugins.scm_filter.utils.GitHubFilterRefUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 public class GitHubAgedPullRequestsTrait extends AgedTypeRefsTrait {
@@ -76,7 +76,7 @@ public class GitHubAgedPullRequestsTrait extends AgedTypeRefsTrait {
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
                 throws IOException, InterruptedException {
             if (scmHead instanceof PullRequestSCMHead) {
-                return FilterRefUtils.isPullRequestExcluded(
+                return GitHubFilterRefUtils.isPullRequestExcluded(
                         (GitHubSCMSourceRequest) scmSourceRequest,
                         (PullRequestSCMHead) scmHead,
                         getAcceptableDateTimeThreshold());

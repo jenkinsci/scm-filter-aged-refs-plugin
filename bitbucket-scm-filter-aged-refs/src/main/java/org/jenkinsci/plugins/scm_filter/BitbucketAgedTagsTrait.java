@@ -11,7 +11,7 @@ import jenkins.scm.api.trait.SCMSourceRequest;
 import jenkins.scm.impl.trait.Selection;
 import org.jenkinsci.Symbol;
 import org.jenkinsci.plugins.scm_filter.enums.RefType;
-import org.jenkinsci.plugins.scm_filter.utils.FilterRefUtils;
+import org.jenkinsci.plugins.scm_filter.utils.BitbucketFilterRefUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
 public class BitbucketAgedTagsTrait extends AgedTypeRefsTrait {
@@ -76,7 +76,7 @@ public class BitbucketAgedTagsTrait extends AgedTypeRefsTrait {
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
                 throws IOException, InterruptedException {
             if (scmHead instanceof BitbucketTagSCMHead) {
-                return FilterRefUtils.isTagExcluded(
+                return BitbucketFilterRefUtils.isTagExcluded(
                         (BitbucketTagSCMHead) scmHead, getAcceptableDateTimeThreshold());
             }
             return false;
