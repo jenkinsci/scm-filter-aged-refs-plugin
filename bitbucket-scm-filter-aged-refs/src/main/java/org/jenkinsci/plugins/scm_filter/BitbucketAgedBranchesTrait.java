@@ -82,7 +82,7 @@ public class BitbucketAgedBranchesTrait extends AgedTypeRefsTrait {
                 return FilterRefUtils.isBranchExcluded(
                         (BitbucketSCMSourceRequest) scmSourceRequest,
                         (BranchSCMHead) scmHead,
-                        super.getAcceptableDateTimeThreshold());
+                        getAcceptableDateTimeThreshold());
             }
             return false;
         }

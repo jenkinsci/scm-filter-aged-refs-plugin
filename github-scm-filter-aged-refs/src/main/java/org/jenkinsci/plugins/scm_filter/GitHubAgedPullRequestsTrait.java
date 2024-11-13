@@ -79,7 +79,7 @@ public class GitHubAgedPullRequestsTrait extends AgedTypeRefsTrait {
                 return FilterRefUtils.isPullRequestExcluded(
                         (GitHubSCMSourceRequest) scmSourceRequest,
                         (PullRequestSCMHead) scmHead,
-                        super.getAcceptableDateTimeThreshold());
+                        getAcceptableDateTimeThreshold());
             }
             return false;
         }

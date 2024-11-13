@@ -76,15 +76,15 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
                 return FilterRefUtils.isBranchExcluded(
                         (BitbucketSCMSourceRequest) scmSourceRequest,
                         (BranchSCMHead) scmHead,
-                        super.getAcceptableDateTimeThreshold());
+                        getAcceptableDateTimeThreshold());
             } else if (scmHead instanceof PullRequestSCMHead) {
                 return FilterRefUtils.isPullRequestExcluded(
                         (BitbucketSCMSourceRequest) scmSourceRequest,
                         (PullRequestSCMHead) scmHead,
-                        super.getAcceptableDateTimeThreshold());
+                        getAcceptableDateTimeThreshold());
             } else if (scmHead instanceof BitbucketTagSCMHead) {
                 return FilterRefUtils.isTagExcluded(
-                        (BitbucketTagSCMHead) scmHead, super.getAcceptableDateTimeThreshold());
+                        (BitbucketTagSCMHead) scmHead, getAcceptableDateTimeThreshold());
             }
             return false;
         }

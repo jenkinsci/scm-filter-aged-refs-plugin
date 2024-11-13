@@ -82,7 +82,7 @@ public class GitHubAgedBranchesTrait extends AgedTypeRefsTrait {
                 return FilterRefUtils.isBranchExcluded(
                         (GitHubSCMSourceRequest) scmSourceRequest,
                         (BranchSCMHead) scmHead,
-                        super.getAcceptableDateTimeThreshold());
+                        getAcceptableDateTimeThreshold());
             }
             return false;
         }

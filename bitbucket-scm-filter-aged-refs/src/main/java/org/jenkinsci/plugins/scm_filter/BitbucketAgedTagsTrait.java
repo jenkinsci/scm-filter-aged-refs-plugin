@@ -77,7 +77,7 @@ public class BitbucketAgedTagsTrait extends AgedTypeRefsTrait {
                 throws IOException, InterruptedException {
             if (scmHead instanceof BitbucketTagSCMHead) {
                 return FilterRefUtils.isTagExcluded(
-                        (BitbucketTagSCMHead) scmHead, super.getAcceptableDateTimeThreshold());
+                        (BitbucketTagSCMHead) scmHead, getAcceptableDateTimeThreshold());
             }
             return false;
         }

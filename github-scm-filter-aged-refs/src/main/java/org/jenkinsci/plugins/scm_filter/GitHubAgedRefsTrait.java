@@ -76,14 +76,14 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                 return FilterRefUtils.isBranchExcluded(
                         (GitHubSCMSourceRequest) scmSourceRequest,
                         (BranchSCMHead) scmHead,
-                        super.getAcceptableDateTimeThreshold());
+                        getAcceptableDateTimeThreshold());
             } else if (scmHead instanceof PullRequestSCMHead) {
                 return FilterRefUtils.isPullRequestExcluded(
                         (GitHubSCMSourceRequest) scmSourceRequest,
                         (PullRequestSCMHead) scmHead,
-                        super.getAcceptableDateTimeThreshold());
+                        getAcceptableDateTimeThreshold());
             } else if (scmHead instanceof GitHubTagSCMHead) {
-                return FilterRefUtils.isTagExcluded((GitHubTagSCMHead) scmHead, super.getAcceptableDateTimeThreshold());
+                return FilterRefUtils.isTagExcluded((GitHubTagSCMHead) scmHead, getAcceptableDateTimeThreshold());
             }
             return false;
         }

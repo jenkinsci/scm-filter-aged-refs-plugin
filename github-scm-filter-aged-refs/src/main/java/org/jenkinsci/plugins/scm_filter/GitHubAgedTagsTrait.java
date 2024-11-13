@@ -76,7 +76,7 @@ public class GitHubAgedTagsTrait extends AgedTypeRefsTrait {
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
                 throws IOException, InterruptedException {
             if (scmHead instanceof GitHubTagSCMHead) {
-                return FilterRefUtils.isTagExcluded((GitHubTagSCMHead) scmHead, super.getAcceptableDateTimeThreshold());
+                return FilterRefUtils.isTagExcluded((GitHubTagSCMHead) scmHead, getAcceptableDateTimeThreshold());
             }
             return false;
         }

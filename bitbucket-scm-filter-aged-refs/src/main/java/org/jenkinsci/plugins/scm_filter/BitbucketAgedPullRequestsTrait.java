@@ -79,7 +79,7 @@ public class BitbucketAgedPullRequestsTrait extends AgedTypeRefsTrait {
                 return FilterRefUtils.isPullRequestExcluded(
                         (BitbucketSCMSourceRequest) scmSourceRequest,
                         (PullRequestSCMHead) scmHead,
-                        super.getAcceptableDateTimeThreshold());
+                        getAcceptableDateTimeThreshold());
             }
             return false;
         }
