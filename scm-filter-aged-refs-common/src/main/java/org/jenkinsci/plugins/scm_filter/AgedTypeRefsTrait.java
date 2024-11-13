@@ -35,9 +35,6 @@ public abstract class AgedTypeRefsTrait extends SCMSourceTrait {
     @Override
     protected abstract void decorateContext(SCMSourceContext<?, ?> context);
 
-    /**
-     * Our descriptor.
-     */
     abstract static class AgedRefsDescriptorImpl extends SCMSourceTraitDescriptor {
 
         @Override

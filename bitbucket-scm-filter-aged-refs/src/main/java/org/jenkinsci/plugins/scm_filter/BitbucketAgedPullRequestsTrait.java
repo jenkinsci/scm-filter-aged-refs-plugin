@@ -14,9 +14,6 @@ import org.jenkinsci.plugins.scm_filter.enums.RefType;
 import org.jenkinsci.plugins.scm_filter.utils.FilterRefUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-/**
- * @author witokondoria
- */
 public class BitbucketAgedPullRequestsTrait extends AgedTypeRefsTrait {
     private static final RefType REF_TYPE = RefType.PULL_REQUEST;
 
@@ -37,9 +34,6 @@ public class BitbucketAgedPullRequestsTrait extends AgedTypeRefsTrait {
         }
     }
 
-    /**
-     * Our descriptor.
-     */
     @Extension
     @Selection
     @Symbol("bitbucketAgedPullRequestsTrait")

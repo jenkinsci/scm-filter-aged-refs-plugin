@@ -17,9 +17,6 @@ import org.jenkinsci.plugins.scm_filter.enums.RefType;
 import org.jenkinsci.plugins.scm_filter.utils.FilterRefUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-/**
- * @author witokondoria
- */
 public class BitbucketAgedBranchesTrait extends AgedTypeRefsTrait {
     private static final RefType REF_TYPE = RefType.BRANCH;
 
@@ -40,9 +37,6 @@ public class BitbucketAgedBranchesTrait extends AgedTypeRefsTrait {
         }
     }
 
-    /**
-     * Our descriptor.
-     */
     @Extension
     @Selection
     @Symbol("bitbucketAgedBranchesTrait")
