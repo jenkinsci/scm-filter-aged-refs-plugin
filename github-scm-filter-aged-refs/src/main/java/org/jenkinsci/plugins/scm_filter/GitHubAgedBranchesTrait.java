@@ -13,15 +13,12 @@ import org.jenkinsci.plugins.github_branch_source.BranchSCMHead;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSource;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSourceContext;
 import org.jenkinsci.plugins.github_branch_source.GitHubSCMSourceRequest;
-import org.jenkinsci.plugins.github_branch_source.GitHubTagSCMHead;
-import org.jenkinsci.plugins.github_branch_source.PullRequestSCMHead;
+import org.jenkinsci.plugins.scm_filter.enums.RefType;
 import org.jenkinsci.plugins.scm_filter.utils.GitHubFilterRefUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
 
-/**
- * @author witokondoria
- */
-public class GitHubAgedRefsTrait extends AgedRefsTrait {
+public class GitHubAgedBranchesTrait extends AgedTypeRefsTrait {
+    private static final RefType REF_TYPE = RefType.BRANCH;
 
     /**
      * Constructor for stapler.
@@ -29,7 +26,7 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
      * @param retentionDays retention period in days
      */
     @DataBoundConstructor
-    public GitHubAgedRefsTrait(String retentionDays) {
+    public GitHubAgedBranchesTrait(String retentionDays) {
         super(retentionDays);
     }
 
@@ -40,12 +37,9 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
         }
     }
 
-    /**
-     * Our descriptor.
-     */
     @Extension
     @Selection
-    @Symbol("gitHubAgedRefsTrait")
+    @Symbol("gitHubAgedBranchesTrait")
     @SuppressWarnings("unused") // instantiated by Jenkins
     public static class DescriptorImpl extends AgedRefsDescriptorImpl {
 
@@ -58,12 +52,24 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
         public Class<? extends SCMSource> getSourceClass() {
             return GitHubSCMSource.class;
         }
+
+        @Override
+        @NonNull
+        public String getDisplayName() {
+            return "Filter branches by age";
+        }
+
+        @Override
+        @NonNull
+        public String getRefName() {
+            return REF_TYPE.getName();
+        }
     }
 
     /**
-     * Filter that excludes references (branches, pull requests, tags) according to their last commit modification date and the defined retentionDays.
+     * Filter that excludes branches according to their last commit modification date and the defined retentionDays.
      */
-    private static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
+    private static class ExcludeOldBranchesSCMHeadFilter extends ExcludeReferencesSCMHeadFilter {
 
         ExcludeOldBranchesSCMHeadFilter(int retentionDays) {
             super(retentionDays);
@@ -77,13 +83,6 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
                         (GitHubSCMSourceRequest) scmSourceRequest,
                         (BranchSCMHead) scmHead,
                         getAcceptableDateTimeThreshold());
-            } else if (scmHead instanceof PullRequestSCMHead) {
-                return GitHubFilterRefUtils.isPullRequestExcluded(
-                        (GitHubSCMSourceRequest) scmSourceRequest,
-                        (PullRequestSCMHead) scmHead,
-                        getAcceptableDateTimeThreshold());
-            } else if (scmHead instanceof GitHubTagSCMHead) {
-                return GitHubFilterRefUtils.isTagExcluded((GitHubTagSCMHead) scmHead, getAcceptableDateTimeThreshold());
             }
             return false;
         }

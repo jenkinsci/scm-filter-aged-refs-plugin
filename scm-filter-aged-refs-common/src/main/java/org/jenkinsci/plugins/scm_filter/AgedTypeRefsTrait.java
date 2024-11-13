@@ -15,8 +15,7 @@ import org.kohsuke.accmod.restrictions.NoExternalUse;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.verb.POST;
 
-public abstract class AgedRefsTrait extends SCMSourceTrait {
-
+public abstract class AgedTypeRefsTrait extends SCMSourceTrait {
     final int retentionDays;
 
     /**
@@ -24,7 +23,7 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
      *
      * @param retentionDays retention period in days
      */
-    protected AgedRefsTrait(String retentionDays) {
+    protected AgedTypeRefsTrait(String retentionDays) {
         this.retentionDays = Integer.parseInt(retentionDays);
     }
 
@@ -36,16 +35,13 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
     @Override
     protected abstract void decorateContext(SCMSourceContext<?, ?> context);
 
-    /**
-     * Our descriptor.
-     */
     abstract static class AgedRefsDescriptorImpl extends SCMSourceTraitDescriptor {
 
         @Override
         @NonNull
-        public String getDisplayName() {
-            return "Filter by ref age";
-        }
+        public abstract String getDisplayName();
+
+        public abstract String getRefName();
 
         @Restricted(NoExternalUse.class)
         @POST
@@ -57,11 +53,11 @@ public abstract class AgedRefsTrait extends SCMSourceTrait {
     /**
      * Filter that excludes references (branches, pull requests, tags) according to their last commit modification date and the defined retentionDays.
      */
-    public abstract static class ExcludeBranchesSCMHeadFilter extends SCMHeadFilter {
+    public abstract static class ExcludeReferencesSCMHeadFilter extends SCMHeadFilter {
 
         private final long acceptableDateTimeThreshold;
 
-        protected ExcludeBranchesSCMHeadFilter(int retentionDays) {
+        protected ExcludeReferencesSCMHeadFilter(int retentionDays) {
             long now = System.currentTimeMillis();
             acceptableDateTimeThreshold = now - (24L * 60 * 60 * 1000 * retentionDays);
         }
