@@ -3,7 +3,7 @@
 [![GitHub release](https://img.shields.io/github/v/release/jenkinsci/scm-filter-aged-refs-plugin)](https://github.com/jenkinsci/scm-filter-aged-refs-plugin/releases/latest)
 [![Build Status](https://ci.jenkins.io/buildStatus/icon?job=Plugins%2Fscm-filter-aged-refs-plugin%2Fmain)](https://ci.jenkins.io/job/Plugins/job/scm-filter-aged-refs-plugin/job/main/)
 [![GitHub license](https://img.shields.io/github/license/jenkinsci/scm-filter-aged-refs-plugin)](https://github.com/jenkinsci/scm-filter-aged-refs-plugin/blob/main/LICENSE)
-[![Maintenance](https://img.shields.io/maintenance/yes/2024)]()
+![GitHub last commit](https://img.shields.io/github/last-commit/jenkinsci/scm-filter-aged-refs-plugin)
 
 This is a collection of extensions for several branch source Jenkins plugins.
 
