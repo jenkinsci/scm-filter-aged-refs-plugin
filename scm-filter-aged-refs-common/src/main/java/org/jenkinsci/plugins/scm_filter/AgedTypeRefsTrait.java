@@ -10,13 +10,16 @@ import jenkins.scm.api.trait.SCMSourceRequest;
 import jenkins.scm.api.trait.SCMSourceTrait;
 import jenkins.scm.api.trait.SCMSourceTraitDescriptor;
 import org.jenkinsci.plugins.scm_filter.utils.FormValidationUtils;
+import org.jenkinsci.plugins.scm_filter.utils.RetainedRefMatcher;
 import org.kohsuke.accmod.Restricted;
 import org.kohsuke.accmod.restrictions.NoExternalUse;
+import org.kohsuke.stapler.DataBoundSetter;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.verb.POST;
 
 public abstract class AgedTypeRefsTrait extends SCMSourceTrait {
     final int retentionDays;
+    private String retainedRefPatterns = "";
 
     /**
      * Constructor for stapler.
@@ -30,6 +33,15 @@ public abstract class AgedTypeRefsTrait extends SCMSourceTrait {
     @SuppressWarnings("unused") // used by Jelly EL
     public int getRetentionDays() {
         return this.retentionDays;
+    }
+
+    public String getRetainedRefPatterns() {
+        return retainedRefPatterns == null ? "" : retainedRefPatterns;
+    }
+
+    @DataBoundSetter
+    public void setRetainedRefPatterns(String retainedRefPatterns) {
+        this.retainedRefPatterns = retainedRefPatterns == null ? "" : retainedRefPatterns;
     }
 
     @Override
@@ -56,14 +68,24 @@ public abstract class AgedTypeRefsTrait extends SCMSourceTrait {
     public abstract static class ExcludeReferencesSCMHeadFilter extends SCMHeadFilter {
 
         private final long acceptableDateTimeThreshold;
+        private final RetainedRefMatcher retainedRefMatcher;
 
         protected ExcludeReferencesSCMHeadFilter(int retentionDays) {
+            this(retentionDays, "");
+        }
+
+        protected ExcludeReferencesSCMHeadFilter(int retentionDays, String retainedRefPatterns) {
             long now = System.currentTimeMillis();
             acceptableDateTimeThreshold = now - (24L * 60 * 60 * 1000 * retentionDays);
+            retainedRefMatcher = new RetainedRefMatcher(retainedRefPatterns);
         }
 
         public long getAcceptableDateTimeThreshold() {
             return acceptableDateTimeThreshold;
+        }
+
+        protected boolean isRetainedRef(SCMHead scmHead) {
+            return retainedRefMatcher.matches(scmHead.getName());
         }
 
         @Override
