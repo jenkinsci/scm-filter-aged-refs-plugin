@@ -36,7 +36,7 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
         if (retentionDays > 0) {
-            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(retentionDays));
+            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(retentionDays, getRetainedRefPatterns()));
         }
     }
 
@@ -63,15 +63,18 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
     /**
      * Filter that excludes references (branches, pull requests, tags) according to their last commit modification date and the defined retentionDays.
      */
-    private static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
+    static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
 
-        ExcludeOldBranchesSCMHeadFilter(int retentionDays) {
-            super(retentionDays);
+        ExcludeOldBranchesSCMHeadFilter(int retentionDays, String retainedRefPatterns) {
+            super(retentionDays, retainedRefPatterns);
         }
 
         @Override
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
                 throws IOException, InterruptedException {
+            if (isRetainedRef(scmHead)) {
+                return false;
+            }
             if (scmHead instanceof BranchSCMHead) {
                 return BitbucketFilterRefUtils.isBranchExcluded(
                         (BitbucketSCMSourceRequest) scmSourceRequest,

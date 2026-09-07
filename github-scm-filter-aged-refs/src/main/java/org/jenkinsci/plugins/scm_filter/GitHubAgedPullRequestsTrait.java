@@ -30,7 +30,7 @@ public class GitHubAgedPullRequestsTrait extends AgedTypeRefsTrait {
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
         if (retentionDays > 0) {
-            context.withFilter(new ExcludeOldPullRequestsSCMHeadFilter(retentionDays));
+            context.withFilter(new ExcludeOldPullRequestsSCMHeadFilter(retentionDays, getRetainedRefPatterns()));
         }
     }
 
@@ -66,16 +66,19 @@ public class GitHubAgedPullRequestsTrait extends AgedTypeRefsTrait {
     /**
      * Filter that excludes pull requests according to their last commit modification date and the defined retentionDays.
      */
-    private static class ExcludeOldPullRequestsSCMHeadFilter extends ExcludeReferencesSCMHeadFilter {
+    static class ExcludeOldPullRequestsSCMHeadFilter extends ExcludeReferencesSCMHeadFilter {
 
-        ExcludeOldPullRequestsSCMHeadFilter(int retentionDays) {
-            super(retentionDays);
+        ExcludeOldPullRequestsSCMHeadFilter(int retentionDays, String retainedRefPatterns) {
+            super(retentionDays, retainedRefPatterns);
         }
 
         @Override
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
                 throws IOException, InterruptedException {
             if (scmHead instanceof PullRequestSCMHead) {
+                if (isRetainedRef(scmHead)) {
+                    return false;
+                }
                 return GitHubFilterRefUtils.isPullRequestExcluded(
                         (GitHubSCMSourceRequest) scmSourceRequest,
                         (PullRequestSCMHead) scmHead,
