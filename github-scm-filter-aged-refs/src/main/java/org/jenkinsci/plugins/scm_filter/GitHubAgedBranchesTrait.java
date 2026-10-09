@@ -33,7 +33,7 @@ public class GitHubAgedBranchesTrait extends AgedTypeRefsTrait {
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
         if (retentionDays > 0) {
-            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(retentionDays));
+            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(retentionDays, getRetainedRefPatterns()));
         }
     }
 
@@ -69,16 +69,19 @@ public class GitHubAgedBranchesTrait extends AgedTypeRefsTrait {
     /**
      * Filter that excludes branches according to their last commit modification date and the defined retentionDays.
      */
-    private static class ExcludeOldBranchesSCMHeadFilter extends ExcludeReferencesSCMHeadFilter {
+    static class ExcludeOldBranchesSCMHeadFilter extends ExcludeReferencesSCMHeadFilter {
 
-        ExcludeOldBranchesSCMHeadFilter(int retentionDays) {
-            super(retentionDays);
+        ExcludeOldBranchesSCMHeadFilter(int retentionDays, String retainedRefPatterns) {
+            super(retentionDays, retainedRefPatterns);
         }
 
         @Override
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
                 throws IOException, InterruptedException {
             if (scmHead instanceof BranchSCMHead) {
+                if (isRetainedRef(scmHead)) {
+                    return false;
+                }
                 return GitHubFilterRefUtils.isBranchExcluded(
                         (GitHubSCMSourceRequest) scmSourceRequest,
                         (BranchSCMHead) scmHead,

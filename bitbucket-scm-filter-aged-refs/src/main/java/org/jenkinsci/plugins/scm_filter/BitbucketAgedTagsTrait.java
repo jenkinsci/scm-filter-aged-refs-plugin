@@ -30,7 +30,7 @@ public class BitbucketAgedTagsTrait extends AgedTypeRefsTrait {
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
         if (retentionDays > 0) {
-            context.withFilter(new ExcludeOldTagsSCMHeadFilter(retentionDays));
+            context.withFilter(new ExcludeOldTagsSCMHeadFilter(retentionDays, getRetainedRefPatterns()));
         }
     }
 
@@ -66,16 +66,19 @@ public class BitbucketAgedTagsTrait extends AgedTypeRefsTrait {
     /**
      * Filter that excludes tags according to their last commit modification date and the defined retentionDays.
      */
-    private static class ExcludeOldTagsSCMHeadFilter extends ExcludeReferencesSCMHeadFilter {
+    static class ExcludeOldTagsSCMHeadFilter extends ExcludeReferencesSCMHeadFilter {
 
-        ExcludeOldTagsSCMHeadFilter(int retentionDays) {
-            super(retentionDays);
+        ExcludeOldTagsSCMHeadFilter(int retentionDays, String retainedRefPatterns) {
+            super(retentionDays, retainedRefPatterns);
         }
 
         @Override
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
                 throws IOException, InterruptedException {
             if (scmHead instanceof BitbucketTagSCMHead) {
+                if (isRetainedRef(scmHead)) {
+                    return false;
+                }
                 return BitbucketFilterRefUtils.isTagExcluded(
                         (BitbucketTagSCMHead) scmHead, getAcceptableDateTimeThreshold());
             }
