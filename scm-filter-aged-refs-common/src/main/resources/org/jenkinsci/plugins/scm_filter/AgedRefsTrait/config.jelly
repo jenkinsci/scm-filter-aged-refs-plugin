@@ -4,4 +4,7 @@
     <f:entry title="Days to accept unmodified refs" field="retentionDays">
         <f:number clazz="positive-number" min="1" step="1" default="1"/>
     </f:entry>
+    <f:entry title="References to retain regardless of age" field="retainedRefPatterns">
+        <f:textarea/>
+    </f:entry>
 </j:jelly>

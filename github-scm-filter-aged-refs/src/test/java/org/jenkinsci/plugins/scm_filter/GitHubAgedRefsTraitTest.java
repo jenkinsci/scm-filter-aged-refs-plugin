@@ -22,6 +22,28 @@ class GitHubAgedRefsTraitTest {
         assertThat(instance.getTraits())
                 .singleElement()
                 .isInstanceOf(GitHubAgedRefsTrait.class)
-                .hasFieldOrPropertyWithValue("retentionDays", 30);
+                .hasFieldOrPropertyWithValue("retentionDays", 30)
+                .hasFieldOrPropertyWithValue("retainedRefPatterns", "");
+    }
+
+    @Test
+    void restoreRetainedRefPatterns() throws IOException {
+        GitHubSCMSource instance = load("retain_selected_branches.xml");
+        assertThat(instance.getTraits())
+                .singleElement()
+                .isInstanceOf(GitHubAgedRefsTrait.class)
+                .hasFieldOrPropertyWithValue("retentionDays", 30)
+                .hasFieldOrPropertyWithValue("retainedRefPatterns", "main\nrelease/*");
+    }
+
+    @Test
+    void retainedRefBypassesAgeLookup() throws IOException, InterruptedException {
+        GitHubAgedRefsTrait.ExcludeOldBranchesSCMHeadFilter filter =
+                new GitHubAgedRefsTrait.ExcludeOldBranchesSCMHeadFilter(30, "main\nv1.*");
+
+        assertThat(filter.isExcluded(null, new org.jenkinsci.plugins.github_branch_source.BranchSCMHead("main")))
+                .isFalse();
+        assertThat(filter.isExcluded(null, new org.jenkinsci.plugins.github_branch_source.GitHubTagSCMHead("v1.0", 0)))
+                .isFalse();
     }
 }

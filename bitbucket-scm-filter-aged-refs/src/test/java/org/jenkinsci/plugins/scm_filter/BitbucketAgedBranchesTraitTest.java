@@ -24,6 +24,26 @@ public class BitbucketAgedBranchesTraitTest {
         assertThat(instance.getTraits())
                 .singleElement()
                 .isInstanceOf(BitbucketAgedBranchesTrait.class)
-                .hasFieldOrPropertyWithValue("retentionDays", 30);
+                .hasFieldOrPropertyWithValue("retentionDays", 30)
+                .hasFieldOrPropertyWithValue("retainedRefPatterns", "");
+    }
+
+    @Test
+    void restoreRetainedRefPatterns(JenkinsRule ignoredRule) throws IOException {
+        BitbucketSCMSource instance = load("retain_selected_branches.xml");
+        assertThat(instance.getTraits())
+                .singleElement()
+                .isInstanceOf(BitbucketAgedBranchesTrait.class)
+                .hasFieldOrPropertyWithValue("retentionDays", 30)
+                .hasFieldOrPropertyWithValue("retainedRefPatterns", "main\nrelease/*");
+    }
+
+    @Test
+    void retainedRefBypassesAgeLookup(JenkinsRule ignoredRule) throws IOException, InterruptedException {
+        BitbucketAgedBranchesTrait.ExcludeOldBranchesSCMHeadFilter filter =
+                new BitbucketAgedBranchesTrait.ExcludeOldBranchesSCMHeadFilter(30, "main");
+
+        assertThat(filter.isExcluded(null, new com.cloudbees.jenkins.plugins.bitbucket.BranchSCMHead("main")))
+                .isFalse();
     }
 }

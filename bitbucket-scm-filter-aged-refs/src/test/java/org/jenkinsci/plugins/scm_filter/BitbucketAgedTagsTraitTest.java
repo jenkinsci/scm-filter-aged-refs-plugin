@@ -3,6 +3,7 @@ package org.jenkinsci.plugins.scm_filter;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.cloudbees.jenkins.plugins.bitbucket.BitbucketSCMSource;
+import com.cloudbees.jenkins.plugins.bitbucket.BitbucketTagSCMHead;
 import java.io.IOException;
 import java.io.InputStream;
 import jenkins.model.Jenkins;
@@ -24,6 +25,15 @@ public class BitbucketAgedTagsTraitTest {
         assertThat(instance.getTraits())
                 .singleElement()
                 .isInstanceOf(BitbucketAgedTagsTrait.class)
-                .hasFieldOrPropertyWithValue("retentionDays", 30);
+                .hasFieldOrPropertyWithValue("retentionDays", 30)
+                .hasFieldOrPropertyWithValue("retainedRefPatterns", "");
+    }
+
+    @Test
+    void retainedTagBypassesAgeLookup(JenkinsRule ignoredRule) throws IOException, InterruptedException {
+        BitbucketAgedTagsTrait.ExcludeOldTagsSCMHeadFilter filter =
+                new BitbucketAgedTagsTrait.ExcludeOldTagsSCMHeadFilter(30, "v1.*");
+
+        assertThat(filter.isExcluded(null, new BitbucketTagSCMHead("v1.0", 0))).isFalse();
     }
 }
