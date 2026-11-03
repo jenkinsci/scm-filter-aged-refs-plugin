@@ -18,11 +18,11 @@ public class GitHubFilterRefUtils {
             throws IOException {
         Iterable<GHBranch> branches = scmSourceRequest.getBranches();
         for (GHBranch branch : branches) {
-            long branchTS = branch.getOwner()
-                    .getCommit(branch.getSHA1())
-                    .getCommitDate()
-                    .getTime();
             if (branch.getName().equals(scmHead.getName())) {
+                long branchTS = branch.getOwner()
+                        .getCommit(branch.getSHA1())
+                        .getCommitDate()
+                        .getTime();
                 return branchTS < acceptableDateTimeThreshold;
             }
         }
