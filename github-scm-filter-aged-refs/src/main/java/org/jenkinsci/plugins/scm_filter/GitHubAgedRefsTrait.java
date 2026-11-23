@@ -3,6 +3,7 @@ package org.jenkinsci.plugins.scm_filter;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import java.io.IOException;
+import java.util.regex.Pattern;
 import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.SCMSource;
 import jenkins.scm.api.trait.SCMSourceContext;
@@ -17,11 +18,14 @@ import org.jenkinsci.plugins.github_branch_source.GitHubTagSCMHead;
 import org.jenkinsci.plugins.github_branch_source.PullRequestSCMHead;
 import org.jenkinsci.plugins.scm_filter.utils.GitHubFilterRefUtils;
 import org.kohsuke.stapler.DataBoundConstructor;
+import org.kohsuke.stapler.DataBoundSetter;
 
 /**
  * @author witokondoria
  */
 public class GitHubAgedRefsTrait extends AgedRefsTrait {
+
+    private boolean retainDefaultBranch;
 
     /**
      * Constructor for stapler.
@@ -33,10 +37,21 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
         super(retentionDays);
     }
 
+    @SuppressWarnings("unused") // used by Jelly EL
+    public boolean isRetainDefaultBranch() {
+        return retainDefaultBranch;
+    }
+
+    @DataBoundSetter
+    public void setRetainDefaultBranch(boolean retainDefaultBranch) {
+        this.retainDefaultBranch = retainDefaultBranch;
+    }
+
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
         if (retentionDays > 0) {
-            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(retentionDays));
+            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(
+                    retentionDays, getRetainedRefsPattern(), getRetainedRefsExcludePattern(), retainDefaultBranch));
         }
     }
 
@@ -65,14 +80,27 @@ public class GitHubAgedRefsTrait extends AgedRefsTrait {
      */
     private static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
 
-        ExcludeOldBranchesSCMHeadFilter(int retentionDays) {
-            super(retentionDays);
+        private final boolean retainDefaultBranch;
+
+        ExcludeOldBranchesSCMHeadFilter(
+                int retentionDays, Pattern retainedRefs, Pattern retainedRefsExcludes, boolean retainDefaultBranch) {
+            super(retentionDays, retainedRefs, retainedRefsExcludes);
+            this.retainDefaultBranch = retainDefaultBranch;
         }
 
         @Override
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
                 throws IOException, InterruptedException {
+            if (isRetained(scmHead)) {
+                return false;
+            }
             if (scmHead instanceof BranchSCMHead) {
+                if (retainDefaultBranch
+                        && !isRetentionExcluded(scmHead)
+                        && GitHubFilterRefUtils.isDefaultBranch(
+                                (GitHubSCMSourceRequest) scmSourceRequest, (BranchSCMHead) scmHead)) {
+                    return false;
+                }
                 return GitHubFilterRefUtils.isBranchExcluded(
                         (GitHubSCMSourceRequest) scmSourceRequest,
                         (BranchSCMHead) scmHead,

@@ -9,6 +9,7 @@ import com.cloudbees.jenkins.plugins.bitbucket.PullRequestSCMHead;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import java.io.IOException;
+import java.util.regex.Pattern;
 import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.SCMSource;
 import jenkins.scm.api.trait.SCMSourceContext;
@@ -36,7 +37,8 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
         if (retentionDays > 0) {
-            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(retentionDays));
+            context.withFilter(new ExcludeOldBranchesSCMHeadFilter(
+                    retentionDays, getRetainedRefsPattern(), getRetainedRefsExcludePattern()));
         }
     }
 
@@ -65,13 +67,16 @@ public class BitbucketAgedRefsTrait extends AgedRefsTrait {
      */
     private static class ExcludeOldBranchesSCMHeadFilter extends ExcludeBranchesSCMHeadFilter {
 
-        ExcludeOldBranchesSCMHeadFilter(int retentionDays) {
-            super(retentionDays);
+        ExcludeOldBranchesSCMHeadFilter(int retentionDays, Pattern retainedRefs, Pattern retainedRefsExcludes) {
+            super(retentionDays, retainedRefs, retainedRefsExcludes);
         }
 
         @Override
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
                 throws IOException, InterruptedException {
+            if (isRetained(scmHead)) {
+                return false;
+            }
             if (scmHead instanceof BranchSCMHead) {
                 return BitbucketFilterRefUtils.isBranchExcluded(
                         (BitbucketSCMSourceRequest) scmSourceRequest,

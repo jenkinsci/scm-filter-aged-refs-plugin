@@ -3,6 +3,7 @@ package org.jenkinsci.plugins.scm_filter;
 import edu.umd.cs.findbugs.annotations.NonNull;
 import hudson.Extension;
 import java.io.IOException;
+import java.util.regex.Pattern;
 import jenkins.scm.api.SCMHead;
 import jenkins.scm.api.SCMSource;
 import jenkins.scm.api.trait.SCMSourceContext;
@@ -30,7 +31,8 @@ public class GitHubAgedTagsTrait extends AgedTypeRefsTrait {
     @Override
     protected void decorateContext(SCMSourceContext<?, ?> context) {
         if (retentionDays > 0) {
-            context.withFilter(new ExcludeOldTagsSCMHeadFilter(retentionDays));
+            context.withFilter(new ExcludeOldTagsSCMHeadFilter(
+                    retentionDays, getRetainedRefsPattern(), getRetainedRefsExcludePattern()));
         }
     }
 
@@ -68,13 +70,16 @@ public class GitHubAgedTagsTrait extends AgedTypeRefsTrait {
      */
     private static class ExcludeOldTagsSCMHeadFilter extends ExcludeReferencesSCMHeadFilter {
 
-        ExcludeOldTagsSCMHeadFilter(int retentionDays) {
-            super(retentionDays);
+        ExcludeOldTagsSCMHeadFilter(int retentionDays, Pattern retainedRefs, Pattern retainedRefsExcludes) {
+            super(retentionDays, retainedRefs, retainedRefsExcludes);
         }
 
         @Override
         public boolean isExcluded(@NonNull SCMSourceRequest scmSourceRequest, @NonNull SCMHead scmHead)
                 throws IOException, InterruptedException {
+            if (isRetained(scmHead)) {
+                return false;
+            }
             if (scmHead instanceof GitHubTagSCMHead) {
                 return GitHubFilterRefUtils.isTagExcluded((GitHubTagSCMHead) scmHead, getAcceptableDateTimeThreshold());
             }

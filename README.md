@@ -45,3 +45,13 @@ acceptable threshold (positive days) for each reference:
 In case of an invalid positive threshold, the form won't validate:
 
 ![Error Screenshot](.github/images/config-invalid.png)
+
+Each behaviour can also always accept references whose whole name matches a regular expression, for example
+`main|master|release/.*` (pull requests are named `PR-<number>`), whatever their age.
+
+On GitHub, **Filter by ref age** and **Filter branches by age** can also always accept the repository's default
+branch, so a repository that has not changed in a while keeps its default branch job. A reference is accepted if
+either option applies.
+
+A second regular expression lists exceptions to both options: matching references are filtered by age as usual,
+even if they match the first expression or are the default branch, for example `release/old-.*`.
