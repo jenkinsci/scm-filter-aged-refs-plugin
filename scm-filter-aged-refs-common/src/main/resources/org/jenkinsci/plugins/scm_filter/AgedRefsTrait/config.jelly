@@ -4,4 +4,10 @@
     <f:entry title="Days to accept unmodified refs" field="retentionDays">
         <f:number clazz="positive-number" min="1" step="1" default="1"/>
     </f:entry>
+    <f:entry title="Always accept refs matching (regular expression)" field="retainedRefsRegex">
+        <f:textbox/>
+    </f:entry>
+    <f:entry title="Except refs matching (regular expression)" field="retainedRefsExcludeRegex">
+        <f:textbox/>
+    </f:entry>
 </j:jelly>

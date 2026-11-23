@@ -10,9 +10,15 @@ import org.jenkinsci.plugins.github_branch_source.PullRequestSCMHead;
 import org.kohsuke.github.GHBranch;
 import org.kohsuke.github.GHPullRequest;
 import org.kohsuke.github.GHPullRequestCommitDetail;
+import org.kohsuke.github.GHRepository;
 import org.kohsuke.github.PagedIterator;
 
 public class GitHubFilterRefUtils {
+    public static boolean isDefaultBranch(GitHubSCMSourceRequest scmSourceRequest, BranchSCMHead scmHead) {
+        GHRepository repository = scmSourceRequest.getRepository();
+        return repository != null && scmHead.getName().equals(repository.getDefaultBranch());
+    }
+
     public static boolean isBranchExcluded(
             GitHubSCMSourceRequest scmSourceRequest, BranchSCMHead scmHead, long acceptableDateTimeThreshold)
             throws IOException {

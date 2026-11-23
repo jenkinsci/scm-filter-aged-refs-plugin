@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?jelly escape-by-default='true'?>
+<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form" xmlns:st="jelly:stapler">
+    <st:include class="org.jenkinsci.plugins.scm_filter.AgedTypeRefsTrait" page="config.jelly"/>
+    <f:entry field="retainDefaultBranch">
+        <f:checkbox title="Always accept the default branch"/>
+    </f:entry>
+</j:jelly>
